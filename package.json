@@ -1,0 +1,21 @@
+{
+  "name": "orbit-ai-functions",
+  "description": "Orbit AI — secure server-side mediator (Gemini) for Orbit Logistics",
+  "version": "1.0.0",
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "test": "node test/orbit-ai.test.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^5.1.0",
+    "@google/generative-ai": "^0.21.0"
+  },
+  "private": true
+}

@@ -1,0 +1,8 @@
+node_modules/
+.env
+*.log
+.runtimeconfig.json
+
+# vendor is regenerated from the canonical source by sync-vendor.js on deploy.
+# Ignored so the copies never drift from the originals in git.
+vendor/
