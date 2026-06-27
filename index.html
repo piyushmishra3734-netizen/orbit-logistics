@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Express Goods Carrier — India's Trusted Freight Partner</title>
+<meta name="description" content="Express Goods Carrier — 20+ years of trusted pan-India industrial freight. Service first, charges later. FTL, PTL, heavy cargo, domestic and international.">
+<meta name="keywords" content="transport India, freight carrier, FTL PTL, industrial cargo, goods transport, Pithampur transport, pan India logistics">
+<meta property="og:title" content="Express Goods Carrier — India's Trusted Freight Partner">
+<meta property="og:description" content="Safe. Secure. On Time. Every Time. Pan-India Transport and Logistics.">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Express Goods Carrier","telephone":["+919826024265","+919424594681"],"areaServed":"IN","serviceType":["Full Truck Load","Part Truck Load","Industrial Cargo","International Cargo"]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://firestore.googleapis.com">
+<link rel="preconnect" href="https://identitytoolkit.googleapis.com">
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET ───────────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#0a0b0e;color:#fff;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:default;}
+a{color:inherit;text-decoration:none;}
+img{display:block;}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit;}
+input,select,textarea{font-family:'Inter',sans-serif;}
+::selection{background:#f5930a;color:#0a0b0e;}
+
+/* ─── CSS VARIABLES ───────────────────────────────────────── */
+:root{
+  --amber:#f5930a;
+  --amber-h:#ffaa2e;
+  --amber-d:#d97a06;
+  --blk:#0a0b0e;
+  --d1:#0d0f14;
+  --d2:#12151b;
+  --d3:#181c24;
+  --d4:#1e222c;
+  --white:#ffffff;
+  --muted:#8a9ab0;
+  --muted2:#5a6478;
+  --green:#3dd68c;
+  --wa:#25D366;
+  --line:rgba(255,255,255,.08);
+  --linem:rgba(255,255,255,.13);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+/* ─── SCROLL PROGRESS BAR ─────────────────────────────────── */
+#spb{
+  position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--amber-d),var(--amber),var(--amber-h));
+  z-index:9999;transition:width .06s linear;
+  box-shadow:0 0 10px rgba(245,147,10,.7);
+  pointer-events:none;
+}
+
+/* ─── PRELOADER ───────────────────────────────────────────── */
+/* Shows ONLY the truck/logo-mark portion of the logo.
+   Logo is 3464×3464. The truck icon occupies the top ~38%.
+   We clip a fixed-height container so only truck is visible. */
+#pl{
+  position:fixed;inset:0;z-index:10000;
+  background:var(--blk);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+  transition:opacity .7s var(--ease), visibility .7s var(--ease);
+}
+#pl.done{opacity:0;visibility:hidden;pointer-events:none;}
+.pl-mark{
+  width:140px;
+  height:56px;
+  overflow:hidden;
+  position:relative;
+  opacity:0;
+  animation:plFade .5s .2s var(--ease) forwards;
+}
+.pl-mark img{
+  width:140px;
+  height:140px;
+  object-fit:none;
+  object-position:top center;
+  display:block;
+}
+.pl-bar{
+  width:160px;height:2px;
+  background:rgba(255,255,255,.07);
+  border-radius:2px;overflow:hidden;
+}
+.pl-fill{
+  display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,var(--amber-d),var(--amber));
+  animation:plFill 1.4s .3s var(--ease) forwards;
+}
+.pl-txt{
+  font-family:'IBM Plex Mono';font-size:10px;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted2);
+  opacity:0;animation:plFade .5s .55s forwards;
+}
+@keyframes plFade{to{opacity:1;}}
+@keyframes plFill{to{width:100%;}}
+
+/* ─── NAV ─────────────────────────────────────────────────── */
+/* Height: 68px. Logo left. Links center. CTA btn right. */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:68px;
+  background:rgba(10,11,14,.91);
+  backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.nav-wrap{
+  max-width:1440px;margin:0 auto;
+  padding:0 32px;height:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+/* Right-side cluster: lang + signin + cta — keeps them tight and aligned */
+.nav-right-group{
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+/* Logo — full PNG, transparent bg blends into dark nav */
+.nav-logo{display:flex;align-items:center;flex-shrink:0;}
+.nav-logo img{
+  height:44px;width:auto;
+  object-fit:contain;display:block;
+}
+/* Nav links */
+.nav-links{
+  display:flex;align-items:center;gap:2px;
+  flex:1;justify-content:center;
+}
+.nav-links a{
+  font-size:13px;font-weight:600;letter-spacing:.55px;text-transform:uppercase;
+  color:var(--muted);padding:8px 12px;border-radius:5px;
+  transition:color .2s,background .2s;position:relative;white-space:nowrap;
+}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.05);}
+.nav-links a.cur{color:var(--amber);}
+.nav-links a.cur::after{
+  content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
+  width:16px;height:2px;background:var(--amber);border-radius:2px;
+}
+/* GET A QUOTE button */
+.nav-cta{
+  flex-shrink:0;
+  background:var(--amber);color:var(--blk);
+  font-size:13px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;
+  padding:10px 20px;border-radius:6px;
+  box-shadow:0 6px 18px -6px rgba(245,147,10,.55);
+  transition:background .2s,transform .18s,box-shadow .2s;
+  white-space:nowrap;display:inline-block;
+}
+.nav-cta:hover{background:var(--amber-h);transform:translateY(-2px);box-shadow:0 12px 26px -8px rgba(245,147,10,.65);}
+/* Burger */
+.burger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;flex-shrink:0;}
+.burger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:.3s var(--ease);}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+/* Mobile panel */
+.mob{
+  display:none;position:fixed;top:68px;left:0;right:0;
+  background:rgba(10,11,14,.97);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);z-index:499;
+  flex-direction:column;padding:10px 24px 24px;
+}
+.mob a{
+  padding:13px 0;font-size:15px;font-weight:600;
+  letter-spacing:.5px;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--line);
+  display:block;transition:color .2s;
+}
+.mob a:hover{color:var(--amber);}
+.mob .nav-cta{margin-top:14px;text-align:center;display:block;}
+/* Mobile logo inside menu */
+.mob-logo{padding:14px 0 4px;border-bottom:1px solid var(--line);}
+.mob-logo img{height:38px;width:auto;object-fit:contain;}
+.mob.open{display:flex;}
+@media(max-width:1100px){.nav-links{display:none;}.burger{display:flex;}}
+@media(max-width:620px){.nav-wrap{padding:0 16px;}}
+
+/* ─── HERO ────────────────────────────────────────────────── */
+/* Exact reference match:
+   - Full viewport height
+   - Hero photo as BG, truck on right
+   - Gradient: very dark left → transparent right
+   - ONE text block, left side
+   - No duplicate layers, no ghost text
+*/
+.hero{
+  position:relative;
+  width:100%;
+  height:100vh;
+  min-height:580px;
+  max-height:900px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+/* Layer 1: Photo */
+.hero-photo{
+  position:absolute;inset:0;z-index:0;
+  background-image:none;
+  background-size:cover;
+  background-position:right center;
+  background-repeat:no-repeat;
+}
+/* Layer 2: Gradient overlay — dark left, fades to transparent */
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(
+    102deg,
+    rgba(10,11,14,.97) 0%,
+    rgba(10,11,14,.92) 20%,
+    rgba(10,11,14,.72) 38%,
+    rgba(10,11,14,.28) 55%,
+    rgba(10,11,14,.04) 70%,
+    transparent        82%
+  );
+}
+/* Layer 3: Text block — SINGLE, left-aligned */
+.hero-content{
+  position:relative;z-index:2;
+  width:100%;max-width:1440px;
+  margin:0 auto;
+  padding:0 60px;
+  padding-top:68px;/* offset fixed nav */
+}
+.hero-h1{
+  font-size:clamp(38px,5.2vw,72px);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:-1px;
+  line-height:1.02;
+  color:#fff;
+  margin-bottom:14px;
+}
+.hero-h1 .amber{
+  color:var(--amber);
+  display:block;
+}
+.hero-tagline{
+  font-size:clamp(15px,1.55vw,21px);
+  font-weight:700;
+  color:#fff;
+  letter-spacing:.2px;
+  margin-bottom:12px;
+}
+.hero-desc{
+  font-size:clamp(13px,1.15vw,16px);
+  font-weight:400;
+  color:rgba(255,255,255,.72);
+  line-height:1.65;
+  margin-bottom:30px;
+}
+/* CTA button — amber outline, matching reference */
+.hero-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  border:2px solid var(--amber);
+  color:#fff;background:transparent;
+  font-size:clamp(12px,1vw,14px);font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+  padding:13px 26px;border-radius:6px;
+  transition:background .22s,color .22s,transform .18s;
+}
+.hero-btn:hover{background:var(--amber);color:var(--blk);transform:translateY(-2px);}
+@media(max-width:900px){
+  .hero-content{padding:0 32px;padding-top:68px;}
+  .hero-photo{background-position:68% center;}
+  .hero-overlay{background:linear-gradient(102deg,rgba(10,11,14,.97) 0%,rgba(10,11,14,.88) 28%,rgba(10,11,14,.5) 52%,transparent 80%);}
+}
+@media(max-width:580px){
+  .hero-content{padding:0 20px;padding-top:68px;}
+  .hero-photo{background-position:72% center;}
+  .hero-overlay{background:linear-gradient(102deg,rgba(10,11,14,.97) 0%,rgba(10,11,14,.95) 60%,rgba(10,11,14,.78) 100%);}
+}
+
+/* ─── MARQUEE ─────────────────────────────────────────────── */
+.mq{background:var(--amber);padding:10px 0;overflow:hidden;}
+.mq-inner{display:flex;width:max-content;animation:mq 24s linear infinite;}
+.mq-inner:hover{animation-play-state:paused;}
+.mq-inner span{
+  font-size:13px;font-weight:800;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--blk);
+  padding:0 26px;white-space:nowrap;
+  display:flex;align-items:center;
+}
+.mq-inner span::after{content:"★";margin-left:26px;font-size:11px;opacity:.6;}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ─── UTILITY ─────────────────────────────────────────────── */
+.sec{padding:90px 0;}
+.alt{background:var(--d2);}
+.alt2{background:var(--d3);}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+.ey{
+  font-family:'IBM Plex Mono';font-size:11.5px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--amber);
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;
+}
+.ey::before{content:'';width:20px;height:2px;background:var(--amber);display:inline-block;}
+.sh{font-size:clamp(24px,3.8vw,44px);font-weight:900;text-transform:uppercase;letter-spacing:-.4px;line-height:1.02;margin-bottom:14px;}
+.sh span{color:var(--amber);}
+.sd{color:var(--muted);font-size:15.5px;line-height:1.65;max-width:540px;}
+/* Reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.rv.in{opacity:1;transform:none;}
+.sg>*{opacity:0;transform:translateY(16px);transition:opacity .55s var(--ease),transform .55s var(--ease);}
+.sg.in>*:nth-child(1){transition-delay:0s;opacity:1;transform:none;}
+.sg.in>*:nth-child(2){transition-delay:.07s;opacity:1;transform:none;}
+.sg.in>*:nth-child(3){transition-delay:.14s;opacity:1;transform:none;}
+.sg.in>*:nth-child(4){transition-delay:.21s;opacity:1;transform:none;}
+.sg.in>*:nth-child(5){transition-delay:.28s;opacity:1;transform:none;}
+.sg.in>*:nth-child(6){transition-delay:.35s;opacity:1;transform:none;}
+/* Buttons */
+.btn-a{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--amber);color:var(--blk);
+  font-size:14px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;
+  padding:12px 24px;border-radius:6px;
+  box-shadow:0 8px 22px -8px rgba(245,147,10,.55);
+  transition:background .2s,transform .18s,box-shadow .2s;
+  white-space:nowrap;
+}
+.btn-a:hover{background:var(--amber-h);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(245,147,10,.65);}
+.btn-g{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--linem);color:#fff;
+  font-size:14px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  padding:12px 24px;border-radius:6px;
+  transition:border-color .2s,color .2s,transform .18s;
+}
+.btn-g:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-2px);}
+.btn-blk{display:flex;justify-content:center;width:100%;}
+/* Lane divider */
+.lane{height:2px;background-image:repeating-linear-gradient(90deg,rgba(245,147,10,.5) 0 20px,transparent 20px 40px);opacity:.38;animation:laneAnim 2s linear infinite;}
+@keyframes laneAnim{from{background-position:0;}to{background-position:-40px 0;}}
+/* About grid */
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+.ab-blocks{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.ab-block{background:var(--d3);padding:26px 22px;transition:background .3s;}
+.ab-block:hover{background:var(--d4);}
+.ab-ico{width:40px;height:40px;border-radius:9px;background:rgba(245,147,10,.09);border:1px solid rgba(245,147,10,.18);display:flex;align-items:center;justify-content:center;margin-bottom:13px;}
+.ab-ico svg{width:21px;height:21px;color:var(--amber);}
+.ab-block h3{font-size:15px;font-weight:800;text-transform:uppercase;margin-bottom:6px;}
+.ab-block p{color:var(--muted);font-size:13px;line-height:1.6;}
+@media(max-width:860px){.ab-grid{grid-template-columns:1fr;}}
+/* Stats */
+.st-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.st-box{background:var(--d3);padding:32px 20px;text-align:center;transition:background .3s;}
+.st-box:hover{background:var(--d4);}
+.st-num{font-size:42px;font-weight:900;color:var(--amber);line-height:1;}
+.st-lbl{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:8px;}
+.st-desc{font-size:12px;color:var(--muted2);margin-top:5px;line-height:1.4;}
+@media(max-width:860px){.st-row{grid-template-columns:1fr 1fr;}}
+/* Services */
+.sv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+.sv-card{background:var(--d2);padding:32px 26px;transition:background .3s,transform .3s var(--ease);}
+.sv-card:hover{background:var(--d3);transform:translateY(-4px);}
+.sv-ico{width:48px;height:48px;border-radius:11px;background:rgba(245,147,10,.09);border:1px solid rgba(245,147,10,.18);display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.sv-ico svg{width:24px;height:24px;color:var(--amber);}
+.sv-card h3{font-size:16.5px;font-weight:800;text-transform:uppercase;letter-spacing:.2px;margin-bottom:9px;}
+.sv-card p{color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:13px;}
+.sv-lnk{font-size:12.5px;font-weight:700;color:var(--amber);letter-spacing:.4px;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;transition:gap .2s;}
+.sv-card:hover .sv-lnk{gap:9px;}
+@media(max-width:860px){.sv-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.sv-grid{grid-template-columns:1fr;}}
+/* Fleet */
+.fl-card{background:var(--d3);border:1px solid var(--line);border-radius:11px;padding:24px 18px;text-align:center;transition:border-color .3s,transform .3s var(--ease);}
+.fl-card:hover{border-color:rgba(245,147,10,.4);transform:translateY(-4px);}
+.fl-tag{font-size:34px;font-weight:900;color:var(--amber);}
+.fl-name{font-size:13px;font-weight:700;margin:5px 0 6px;}
+.fl-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+/* Quote form */
+.qf-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:start;}
+.qf-card{background:var(--d3);border:1px solid var(--linem);border-radius:13px;padding:32px;}
+.qf-card h3{font-size:19px;font-weight:800;text-transform:uppercase;margin-bottom:20px;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.fd{display:flex;flex-direction:column;gap:5px;margin-bottom:13px;}
+.fd label{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
+.fd input,.fd select,.fd textarea{
+  background:var(--blk);border:1px solid var(--linem);border-radius:7px;
+  color:#fff;padding:11px 13px;font-size:14px;
+  transition:border-color .22s,box-shadow .22s;
+}
+.fd select option{background:var(--d4);}
+.fd input:focus,.fd select:focus,.fd textarea:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,147,10,.13);outline:none;}
+.fd input::placeholder,.fd textarea::placeholder{color:var(--muted2);}
+.fd textarea{resize:vertical;min-height:76px;}
+.fb{display:flex;gap:10px;margin-top:7px;flex-wrap:wrap;}
+.fnote{font-size:12px;color:var(--muted2);margin-top:10px;line-height:1.55;}
+.fst{margin-top:10px;font-size:13px;font-family:'IBM Plex Mono';padding:11px 15px;border-radius:7px;display:none;}
+.fst.ok{display:block;background:rgba(61,214,140,.08);border:1px solid rgba(61,214,140,.24);color:var(--green);}
+.fst.er{display:block;background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.2);color:#ff7070;}
+.qf-side h2{font-size:clamp(22px,3.2vw,36px);font-weight:900;text-transform:uppercase;letter-spacing:-.4px;margin-bottom:13px;}
+.qf-side h2 span{color:var(--amber);}
+.qf-side>p{color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:20px;}
+.ck-list{display:flex;flex-direction:column;gap:12px;}
+.ck{display:flex;gap:12px;align-items:flex-start;}
+.ck-dot{flex:none;width:21px;height:21px;border-radius:50%;background:rgba(61,214,140,.11);display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.ck-dot svg{width:11px;height:11px;color:var(--green);}
+.ck p{font-size:14px;line-height:1.55;color:rgba(255,255,255,.88);margin:0;}
+@media(max-width:900px){.qf-grid{grid-template-columns:1fr;}.fr{grid-template-columns:1fr;}}
+/* Clients */
+.cl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:44px;}
+.cl-p{border:2px dashed rgba(255,255,255,.12);border-radius:9px;padding:20px 14px;text-align:center;background:var(--d3);transition:border-color .3s,transform .3s var(--ease);}
+.cl-p:hover{border-color:var(--amber);transform:translateY(-4px);}
+.cl-tag{font-family:'IBM Plex Mono';font-size:9px;color:var(--muted2);letter-spacing:2px;margin-bottom:7px;}
+.cl-name{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;}
+.cl-p.cm{border-style:solid;border-color:rgba(245,147,10,.26);background:linear-gradient(135deg,rgba(245,147,10,.07),var(--d3));}
+.cl-p.cm .cl-name{color:var(--amber);font-size:12px;line-height:1.5;}
+@media(max-width:860px){.cl-grid{grid-template-columns:1fr 1fr;}}
+/* Testimonials */
+.tm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;}
+.tm-card{background:var(--d3);border:1px solid var(--line);border-radius:11px;padding:24px;transition:border-color .3s,transform .3s var(--ease);}
+.tm-card:hover{border-color:rgba(245,147,10,.3);transform:translateY(-3px);}
+.tm-stars{color:var(--amber);font-size:12px;letter-spacing:2px;margin-bottom:8px;}
+.tm-qm{font-size:48px;font-weight:900;color:var(--amber);line-height:.8;opacity:.55;margin-bottom:7px;}
+.tm-card .qt{color:rgba(255,255,255,.9);font-size:13.5px;line-height:1.7;font-style:italic;margin-bottom:14px;}
+.tm-who strong{color:#fff;display:block;font-size:13px;font-weight:700;}
+.tm-who span{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono';}
+@media(max-width:860px){.tm-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.tm-grid{grid-template-columns:1fr;}}
+/* Why us */
+.wy-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:start;}
+.wi-list{display:flex;flex-direction:column;gap:16px;}
+.wi{display:flex;gap:14px;align-items:flex-start;}
+.wi-ico{flex:none;width:32px;height:32px;border-radius:7px;background:rgba(61,214,140,.09);border:1px solid rgba(61,214,140,.18);display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.wi-ico svg{width:14px;height:14px;color:var(--green);}
+.wi-txt strong{display:block;font-size:14.5px;font-weight:700;margin-bottom:3px;}
+.wi-txt p{color:var(--muted);font-size:13px;line-height:1.6;margin:0;}
+.wy-side{background:var(--d3);border:1px solid var(--linem);border-radius:13px;padding:32px;position:sticky;top:88px;}
+.wy-side .big{font-size:66px;font-weight:900;color:var(--amber);line-height:1;margin-bottom:8px;}
+.wy-side p{color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:16px;}
+@media(max-width:900px){.wy-grid{grid-template-columns:1fr;}.wy-side{position:static;}}
+/* Process */
+.pr-grid{display:grid;grid-template-columns:repeat(4,1fr);position:relative;}
+.pr-step{padding:0 20px;position:relative;}
+.pr-step:not(:last-child)::after{content:'';position:absolute;top:26px;right:-1px;width:100%;height:1px;background-image:repeating-linear-gradient(90deg,rgba(245,147,10,.38) 0 8px,transparent 8px 16px);}
+.ps-n{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--amber);letter-spacing:1.5px;margin-bottom:14px;display:block;}
+.ps-c{width:52px;height:52px;border-radius:50%;border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;background:var(--blk);margin-bottom:16px;position:relative;z-index:2;}
+.ps-c span{font-size:19px;font-weight:900;color:var(--amber);}
+.pr-step h3{font-size:15px;font-weight:800;text-transform:uppercase;margin-bottom:8px;}
+.pr-step p{color:var(--muted);font-size:13px;line-height:1.65;}
+@media(max-width:860px){.pr-grid{grid-template-columns:1fr;gap:32px;}.pr-step:not(:last-child)::after{display:none;}}
+/* Gallery */
+.gl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.gl-tile{aspect-ratio:1;border-radius:9px;border:1px solid var(--line);background:linear-gradient(150deg,var(--d3),var(--d4));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:border-color .3s,transform .3s var(--ease);overflow:hidden;cursor:default;}
+.gl-tile:hover{border-color:rgba(245,147,10,.42);transform:scale(1.04);}
+.gl-tile svg{width:30px;height:30px;color:var(--amber);opacity:.75;}
+.gl-tile span{font-family:'IBM Plex Mono';font-size:9px;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase;text-align:center;padding:0 8px;}
+.gl-tile.w2{grid-column:span 2;}
+.gl-tile.w2 svg{width:40px;height:40px;}
+@media(max-width:860px){.gl-grid{grid-template-columns:1fr 1fr;}.gl-tile.w2{grid-column:span 1;}}
+/* Map */
+.mp-card{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--d2);}
+.mp-card iframe{width:100%;height:340px;border:0;display:block;filter:invert(1) hue-rotate(180deg) brightness(.83) saturate(.75);}
+.mp-cap{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);}
+.mp-cap strong{color:#fff;}
+.mp-cap a{color:var(--amber);transition:opacity .2s;}
+.mp-cap a:hover{opacity:.75;}
+/* Contact banner */
+.ct-banner{background:linear-gradient(108deg,rgba(245,147,10,.1),rgba(245,147,10,.02)),var(--d2);border-top:1px solid rgba(245,147,10,.18);border-bottom:1px solid rgba(245,147,10,.18);}
+.ct-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:50px 0;}
+.ct-txt h2{font-size:clamp(20px,3.2vw,36px);font-weight:900;text-transform:uppercase;letter-spacing:-.4px;}
+.ct-txt h2 span{color:var(--amber);}
+.ct-txt p{color:var(--muted);font-size:14.5px;margin-top:6px;}
+.ph-row{display:flex;gap:12px;flex-wrap:wrap;}
+.ph-btn{display:flex;flex-direction:column;gap:3px;border:1px solid var(--linem);border-radius:9px;padding:12px 18px;min-width:180px;transition:border-color .3s,transform .3s var(--ease),background .3s;}
+.ph-btn:hover{border-color:var(--amber);transform:translateY(-3px);background:rgba(245,147,10,.05);}
+.ph-lbl{font-family:'IBM Plex Mono';font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;}
+.ph-num{font-family:'IBM Plex Mono';font-size:16px;font-weight:600;color:#fff;}
+/* Footer */
+footer{background:var(--d2);border-top:1px solid var(--line);padding:52px 0 28px;}
+.ft-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;margin-bottom:40px;}
+.ft-brand img{height:50px;width:auto;object-fit:contain;display:block;margin-bottom:12px;}
+.ft-brand p{color:var(--muted);font-size:13.5px;line-height:1.65;max-width:260px;}
+.ft-sub{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-top:11px;}
+.ft-col h4{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:12px;}
+.ft-col a,.ft-col p{display:block;color:var(--muted);font-size:13.5px;margin-bottom:7px;transition:color .2s;}
+.ft-col a:hover{color:var(--amber);}
+.ft-bot{border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--muted2);font-size:11px;font-family:'IBM Plex Mono';letter-spacing:.4px;}
+@media(max-width:900px){.ft-top{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.ft-top{grid-template-columns:1fr;}}
+/* WhatsApp button helper */
+.wa-btn{display:inline-flex;justify-content:center;align-items:center;gap:7px;padding:11px 17px;border-radius:6px;background:rgba(37,211,102,.09);border:1px solid rgba(37,211,102,.26);color:var(--green);font-weight:700;font-size:13.5px;transition:background .2s,transform .18s;}
+.wa-btn:hover{background:rgba(37,211,102,.18);transform:translateY(-2px);}
+/* Floating stack */
+.fl-stack{position:fixed;right:22px;bottom:22px;z-index:400;display:flex;flex-direction:column;align-items:flex-end;gap:11px;}
+.fl{display:flex;align-items:center;gap:9px;padding:12px 18px;border-radius:50px;font-weight:800;font-size:13.5px;text-decoration:none;opacity:0;transform:translateY(16px);transition:opacity .4s var(--ease),transform .4s var(--ease);position:relative;}
+.fl.vis{opacity:1;transform:translateY(0);}
+.fl:hover{transform:translateY(-3px)!important;}
+.fl .ring{position:absolute;inset:0;border-radius:50px;border:2px solid currentColor;animation:rp 2.2s ease-out infinite;}
+@keyframes rp{0%{opacity:.5;transform:scale(1);}100%{opacity:0;transform:scale(1.3);}}
+.fl-call{background:linear-gradient(135deg,var(--amber),var(--amber-d));color:var(--blk);}
+.fl-wa{background:linear-gradient(135deg,#2fdc78,var(--wa));color:#0b2415;}
+@media(max-width:460px){.fl .flbl{display:none;}.fl{padding:13px;}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}}
+
+/* ═══ PHASE 1 REFINEMENT ══════════════════════════════════════════ */
+
+/* ── Language toggle ──────────────────────── */
+.lang-toggle{display:flex;align-items:center;border:1px solid rgba(255,255,255,.18);border-radius:6px;overflow:hidden;margin-right:6px;flex-shrink:0;}
+.lbtn{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:6px 11px;color:rgba(255,255,255,.5);background:transparent;cursor:pointer;border:none;transition:background .2s,color .2s;line-height:1;}
+.lbtn.on{background:var(--amber);color:var(--blk);}
+.lbtn:hover:not(.on){color:rgba(255,255,255,.85);}
+body.lsw [data-i18n]{opacity:0;transition:opacity .15s;}
+[data-i18n]{transition:opacity .15s;}
+
+/* ── Trust stats upgrade ──────────────────── */
+.trust-sec{background:var(--d2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.trust-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+.trust-tile{background:var(--d3);padding:36px 24px;text-align:center;position:relative;overflow:hidden;transition:background .3s;}
+.trust-tile::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,147,10,.05),transparent 60%);opacity:0;transition:opacity .3s;}
+.trust-tile:hover::before{opacity:1;}
+.trust-tile:hover{background:var(--d4);}
+.trust-num{font-size:46px;font-weight:900;color:var(--amber);line-height:1;}
+.trust-lbl{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:9px;}
+.trust-desc{font-size:12px;color:var(--muted2);margin-top:5px;line-height:1.45;}
+@media(max-width:860px){.trust-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:440px){.trust-inner{grid-template-columns:1fr;}}
+
+/* ── Process 5-step ───────────────────────── */
+.pr-grid-5{display:grid;grid-template-columns:repeat(5,1fr);position:relative;}
+.pr-grid-5 .pr-step{padding:0 14px;position:relative;text-align:center;}
+.pr-grid-5 .pr-step:not(:last-child)::after{content:'';position:absolute;top:27px;left:50%;width:100%;height:2px;background:linear-gradient(90deg,rgba(245,147,10,.45),rgba(245,147,10,.1));z-index:0;}
+.pr-grid-5 .ps-n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:1.5px;margin-bottom:12px;display:block;}
+.pr-grid-5 .ps-c{width:54px;height:54px;border-radius:50%;border:2px solid var(--amber);background:var(--blk);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:background .3s,transform .3s var(--ease);}
+.pr-grid-5 .pr-step:hover .ps-c{background:var(--amber);transform:scale(1.08);}
+.pr-grid-5 .ps-c svg{width:22px;height:22px;color:var(--amber);transition:color .3s;}
+.pr-grid-5 .pr-step:hover .ps-c svg{color:var(--blk);}
+.pr-grid-5 .pr-step h3{font-size:13.5px;font-weight:800;text-transform:uppercase;margin-bottom:7px;}
+.pr-grid-5 .pr-step p{color:var(--muted);font-size:12px;line-height:1.6;}
+@media(max-width:900px){.pr-grid-5{grid-template-columns:1fr 1fr;gap:24px;}.pr-grid-5 .pr-step:not(:last-child)::after{display:none;}}
+@media(max-width:500px){.pr-grid-5{grid-template-columns:1fr;}}
+
+/* ── Testimonials ─────────────────────────── */
+.tm-section{background:var(--d2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.tm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.tmc{background:var(--d3);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;transition:border-color .3s,transform .3s var(--ease);}
+.tmc:hover{border-color:rgba(245,147,10,.28);transform:translateY(-4px);}
+.tmc-stars{color:var(--amber);font-size:13px;letter-spacing:2px;margin-bottom:10px;}
+.tmc-qm{font-size:50px;font-weight:900;color:var(--amber);line-height:.8;opacity:.5;margin-bottom:8px;}
+.tmc .qt{color:rgba(255,255,255,.9);font-size:14px;line-height:1.72;font-style:italic;margin-bottom:16px;flex:1;}
+.tmc-sep{height:1px;background:var(--line);margin-bottom:14px;}
+.tmc-who strong{display:block;font-size:13.5px;font-weight:700;color:#fff;}
+.tmc-who span{font-size:11.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:.5px;}
+@media(max-width:860px){.tm-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.tm-grid{grid-template-columns:1fr;}}
+
+/* ── Emergency button ─────────────────────── */
+.fl-emg{display:flex;align-items:center;gap:9px;padding:11px 16px;border-radius:50px;font-weight:700;font-size:12.5px;text-decoration:none;opacity:0;transform:translateY(16px);transition:opacity .4s var(--ease),transform .4s var(--ease);position:relative;background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.35);color:#ff8080;letter-spacing:.3px;}
+.fl-emg.vis{opacity:1;transform:translateY(0);}
+.fl-emg:hover{background:rgba(255,80,80,.22);transform:translateY(-2px)!important;}
+.fl-emg svg{width:14px;height:14px;flex-shrink:0;}
+@media(max-width:460px){.fl-emg .flbl-e{display:none;}.fl-emg{padding:12px;}}
+</style>
+<link rel="stylesheet" href="auth.css">
+</head>
+<body>
+<div id="spb"></div>
+
+<!-- ─── PRELOADER: truck icon only ─────────────────────────── -->
+<div id="pl">
+  <div class="pl-mark">
+  <img src="">
+  </div>
+  <div class="pl-bar"><span class="pl-fill"></span></div>
+  <div class="pl-txt">Loading Pan-India Routes&hellip;</div>
+</div>
+
+<!-- ─── NAV ────────────────────────────────────────────────── -->
+<header id="nav">
+  <div class="nav-wrap">
+    <a href="#top" class="nav-logo">
+<img src="">
+    </a>
+    <nav class="nav-links">
+      <a href="#top" class="cur" data-i18n="nv.home">Home</a>
+      <a href="#about" data-i18n="nv.about">About Us</a>
+      <a href="#services" data-i18n="nv.services">Services</a>
+      <a href="#fleet" data-i18n="nv.fleet">Fleet</a>
+      <a href="#network" data-i18n="nv.network">Network</a>
+      <a href="#gallery" data-i18n="nv.gallery">Gallery</a>
+      <a href="#contact" data-i18n="nv.contact">Contact</a>
+    </nav>
+    <div class="nav-right-group">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button class="lbtn on" id="bten" onclick="setLang('en')" aria-pressed="true"  aria-label="English">EN</button>
+        <button class="lbtn"    id="bthi" onclick="setLang('hi')" aria-pressed="false" aria-label="Hindi">हिं</button>
+      </div>
+      <div id="authNav"></div>
+      <a href="#quote" class="nav-cta" data-i18n="cta.nav">Get A Quote</a>
+      <button class="burger" id="brg" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+<img src="">
+    <a href="#top" data-i18n="nv.home">Home</a>
+    <a href="#about" data-i18n="nv.about">About Us</a>
+    <a href="#services" data-i18n="nv.services">Services</a>
+    <a href="#fleet" data-i18n="nv.fleet">Fleet</a>
+    <a href="#network" data-i18n="nv.network">Network</a>
+    <a href="#gallery" data-i18n="nv.gallery">Gallery</a>
+    <a href="#contact" data-i18n="nv.contact">Contact</a>
+    <div id="authNavMobile" style="margin:14px 0;"></div>
+    <a href="#quote" class="nav-cta" data-i18n="cta.nav">Get A Quote</a>
+  </div>
+</header>
+
+<!-- ─── HERO ────────────────────────────────────────────────── -->
+<section class="hero" id="top">
+  <div class="hero-photo"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-h1" data-i18n="hr.h1">
+      India's Trusted
+      <span class="amber">Freight Partner</span>
+    </h1>
+    <p class="hero-tagline" data-i18n="hr.tag">Safe. Secure. On Time. Every Time.</p>
+    <p class="hero-desc" data-i18n="hr.desc">
+      Pan-India Transport &amp; Logistics Solutions<br>
+      for Industrial &amp; Commercial Goods.
+    </p>
+    <a href="#contact" class="hero-btn" data-i18n="hr.btn">Get In Touch &nbsp;&rarr;</a>
+  </div>
+</section>
+
+<!-- ─── MARQUEE ─────────────────────────────────────────────── -->
+<div class="mq">
+  <div class="mq-inner">
+    <span>Maan Aluminium</span><span>Sanchi Chemicals</span><span>Parag Copigraph</span><span>Shakti Pumps</span><span>Pan-India Freight</span><span>Service First</span><span>20+ Years On The Road</span><span>Loading &middot; Moving &middot; Delivering</span>
+    <span>Maan Aluminium</span><span>Sanchi Chemicals</span><span>Parag Copigraph</span><span>Shakti Pumps</span><span>Pan-India Freight</span><span>Service First</span><span>20+ Years On The Road</span><span>Loading &middot; Moving &middot; Delivering</span>
+  </div>
+</div>
+
+<!-- ─── ABOUT ───────────────────────────────────────────────── -->
+<section class="sec alt" id="about">
+  <div class="wrap">
+    <div class="ab-grid rv">
+      <div>
+        <div class="ey" data-i18n="ab.ey">About Express Goods Carrier</div>
+        <h2 class="sh" data-i18n="ab.h2">Two Decades Of <span>Trust</span> On Indian Roads</h2>
+        <p style="color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:14px;" data-i18n="ab.p1">Express Goods Carrier has been moving industrial and commercial cargo across India for 20+ years. Based in Pithampur&rsquo;s industrial belt, we serve manufacturers, exporters, chemical companies, and businesses of all sizes.</p>
+        <p style="color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:22px;" data-i18n="ab.p2">What sets us apart: <strong style="color:#fff;">we dispatch your cargo before billing you.</strong> Service first, charges after safe delivery &mdash; a promise that has earned 500+ client relationships built purely on trust.</p>
+        <div style="padding:16px 20px;background:rgba(245,147,10,.07);border:1px solid rgba(245,147,10,.18);border-radius:9px;">
+          <p style="font-size:15px;color:var(--amber);font-weight:700;margin-bottom:3px;">&#2346;&#2361;&#2354;&#2375; &#2360;&#2375;&#2357;&#2366;, &#2347;&#2367;&#2352; &#2349;&#2369;&#2327;&#2340;&#2366;&#2344;</p>
+          <p style="font-size:13px;color:var(--muted);margin:0;" data-i18n="ab.note">Service First &middot; Charges After Safe Delivery &middot; Always.</p>
+        </div>
+      </div>
+      <div class="ab-blocks">
+        <div class="ab-block"><div class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4.5 8-12V5l-8-3-8 3v5c0 7.5 8 12 8 12z"/><path d="M9 12l2 2 4-4"/></svg></div><h3 data-i18n="ab.b1t">Service First</h3><p data-i18n="ab.b1d">We dispatch before billing &mdash; unmatched trust in Indian freight.</p></div>
+        <div class="ab-block"><div class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3 data-i18n="ab.b2t">On-Time. Always.</h3><p data-i18n="ab.b2d">98% on-time delivery across 28+ states, built on planning.</p></div>
+        <div class="ab-block"><div class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 010 20"/></svg></div><h3 data-i18n="ab.b3t">All India Network</h3><p data-i18n="ab.b3d">Pan-India coverage for domestic and international cargo.</p></div>
+        <div class="ab-block"><div class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><h3 data-i18n="ab.b4t">Fair Rates</h3><p data-i18n="ab.b4d">Most competitive pricing in India &mdash; transparent, no hidden fees.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS ────────────────────────────────────────────────── -->
+<section style="padding:64px 0;">
+  <div class="wrap">
+    <div class="st-row sg rv">
+      <div class="st-box"><div class="st-num"><span id="s1">0</span>+</div><div class="st-lbl" data-i18n="st.l1">Years Experience</div><div class="st-desc" data-i18n="st.d1">Trusted freight since early 2000s</div></div>
+      <div class="st-box"><div class="st-num">28+</div><div class="st-lbl" data-i18n="st.l2">States Covered</div><div class="st-desc" data-i18n="st.d2">Active routes all over India</div></div>
+      <div class="st-box"><div class="st-num">98%</div><div class="st-lbl" data-i18n="st.l3">On-Time Delivery</div><div class="st-desc" data-i18n="st.d3">Consistent every consignment</div></div>
+      <div class="st-box"><div class="st-num">500+</div><div class="st-lbl" data-i18n="st.l4">Companies Served</div><div class="st-desc" data-i18n="st.d4">SMEs to large multinationals</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─────────────────────────────────────────────── -->
+<section class="sec alt2" id="services">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:40px;"><div class="ey" data-i18n="sv.ey">Our Services</div><h2 class="sh" data-i18n="sv.h2">Built For Every Kind Of <span>Industrial Cargo</span></h2><p class="sd" data-i18n="sv.sub">From a single pallet to a full multi-axle rig &mdash; right vehicle, right route, right team.</p></div>
+    <div class="sv-grid sg rv">
+      <div class="sv-card"><div class="sv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="6" width="14" height="10"/><path d="M15 9h4l3 3v4h-7"/><circle cx="5.5" cy="18" r="1.8"/><circle cx="18.5" cy="18" r="1.8"/></svg></div><h3 data-i18n="sv1t">Full Truck Load (FTL)</h3><p data-i18n="sv1d">Dedicated truck, exclusive cargo, point-to-point. Best for large industrial consignments.</p><a href="ftl.html" class="sv-lnk"><span data-i18n="sv.more">Learn More</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+      <div class="sv-card"><div class="sv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="7" width="20" height="12" rx="1"/><line x1="2" y1="13" x2="22" y2="13"/><line x1="9" y1="7" x2="9" y2="19"/></svg></div><h3 data-i18n="sv2t">Part Truck Load (PTL)</h3><p data-i18n="sv2d">Smaller loads consolidated on shared trucks. Cost-efficient to every major destination.</p><a href="ptl.html" class="sv-lnk"><span data-i18n="sv.more">Learn More</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+      <div class="sv-card"><div class="sv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><h3 data-i18n="sv3t">Industrial &amp; Heavy Cargo</h3><p data-i18n="sv3d">Machinery, chemicals, steel, and ODC loads &mdash; specialist vehicles, full compliance docs.</p><a href="industrial.html" class="sv-lnk"><span data-i18n="sv.more">Learn More</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+      <div class="sv-card"><div class="sv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3 data-i18n="sv4t">Express Delivery</h3><p data-i18n="sv4d">Same-day dispatch for time-critical shipments with priority routing and constant updates.</p><a href="express.html" class="sv-lnk"><span data-i18n="sv.more">Learn More</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+      <div class="sv-card"><div class="sv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 010 20 15 15 0 010-20z"/></svg></div><h3 data-i18n="sv5t">International Cargo</h3><p data-i18n="sv5d">Cross-border coordination &mdash; customs, border transit, freight forwarder liaison, end-to-end.</p><a href="international.html" class="sv-lnk"><span data-i18n="sv.more">Learn More</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+      <div class="sv-card"><div class="sv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><h3 data-i18n="sv6t">Dedicated Fleet</h3><p data-i18n="sv6d">Long-term fleet assignment for manufacturers needing regular scheduled pickups, fully managed.</p><a href="#contact" class="sv-lnk"><span data-i18n="sv.enquire">Enquire</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FLEET ─────────────────────────────────────────────────── -->
+<section class="sec" id="fleet">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:40px;"><div class="ey" data-i18n="fl.ey">Our Fleet</div><h2 class="sh" data-i18n="fl.h2">Modern Trucks. Every <span>Load Size.</span></h2><p class="sd" data-i18n="fl.sub">LCVs to multi-axle heavy rigs &mdash; the right vehicle, maintained and road-ready.</p></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;" class="sg rv">
+      <div class="fl-card"><div class="fl-tag">LCV</div><div class="fl-name" data-i18n="fl1n">Light Commercial</div><div class="fl-desc" data-i18n="fl1d">Up to 3.5T &middot; City &amp; Short Haul</div></div>
+      <div class="fl-card"><div class="fl-tag">MCV</div><div class="fl-name" data-i18n="fl2n">Medium Commercial</div><div class="fl-desc" data-i18n="fl2d">7&ndash;14T &middot; State &amp; Regional</div></div>
+      <div class="fl-card"><div class="fl-tag">HCV</div><div class="fl-name" data-i18n="fl3n">Heavy Truck</div><div class="fl-desc" data-i18n="fl3d">16&ndash;22T &middot; Pan-India Highways</div></div>
+      <div class="fl-card"><div class="fl-tag">MAV</div><div class="fl-name" data-i18n="fl4n">Multi-Axle Volvo</div><div class="fl-desc" data-i18n="fl4d">25&ndash;40T &middot; Heavy &amp; ODC Cargo</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── NETWORK / MAP ─────────────────────────────────────────── -->
+<section class="sec alt" id="network">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:40px;"><div class="ey" data-i18n="nw.ey">Coverage Network</div><h2 class="sh" data-i18n="nw.h2">Every Highway. <span>Every State.</span></h2><p class="sd" data-i18n="nw.sub">Active freight routes &mdash; from manufacturing hubs to tier-2 cities, ports and border crossings.</p></div>
+    <div class="mp-card rv">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117940.8!2d75.6!3d22.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962e3e5aa6b1c99%3A0x1a2b3c4d5e6f7a8b!2sPithampur%20Industrial%20Area%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1690000000000" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Express Goods Carrier — Pithampur Location"></iframe>
+      <div class="mp-cap"><div><strong data-i18n="nw.hqlbl">Headquarters:</strong> <span data-i18n="nw.hq">Pithampur Industrial Area, Madhya Pradesh, India</span></div><div style="display:flex;gap:14px;"><a href="tel:+919826024265">+91 98260 24265</a><a href="https://maps.google.com/?q=Pithampur+Industrial+Area+Madhya+Pradesh" target="_blank" rel="noopener" data-i18n="nw.openmap">Open in Maps &rarr;</a></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:14px;" class="sg rv">
+      <div style="background:var(--d3);border:1px solid var(--line);border-radius:8px;padding:14px 16px;"><div style="font-size:10px;font-family:'IBM Plex Mono';color:var(--amber);letter-spacing:1.5px;margin-bottom:6px;" data-i18n="nw.north">NORTH</div><div style="font-size:12.5px;color:var(--muted);line-height:1.7;">Delhi NCR &middot; UP &middot; Haryana &middot; Punjab &middot; Rajasthan &middot; HP</div></div>
+      <div style="background:var(--d3);border:1px solid var(--line);border-radius:8px;padding:14px 16px;"><div style="font-size:10px;font-family:'IBM Plex Mono';color:var(--amber);letter-spacing:1.5px;margin-bottom:6px;" data-i18n="nw.west">WEST</div><div style="font-size:12.5px;color:var(--muted);line-height:1.7;">Maharashtra &middot; Gujarat &middot; MP &middot; Goa &middot; Rajasthan</div></div>
+      <div style="background:var(--d3);border:1px solid var(--line);border-radius:8px;padding:14px 16px;"><div style="font-size:10px;font-family:'IBM Plex Mono';color:var(--amber);letter-spacing:1.5px;margin-bottom:6px;" data-i18n="nw.south">SOUTH</div><div style="font-size:12.5px;color:var(--muted);line-height:1.7;">Karnataka &middot; Tamil Nadu &middot; Kerala &middot; AP &middot; Telangana</div></div>
+      <div style="background:var(--d3);border:1px solid var(--line);border-radius:8px;padding:14px 16px;"><div style="font-size:10px;font-family:'IBM Plex Mono';color:var(--amber);letter-spacing:1.5px;margin-bottom:6px;" data-i18n="nw.east">EAST</div><div style="font-size:12.5px;color:var(--muted);line-height:1.7;">West Bengal &middot; Odisha &middot; Bihar &middot; Jharkhand &middot; NE</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CLIENTS ───────────────────────────────────────────────── -->
+<section class="sec" id="clients">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:40px;"><div class="ey" data-i18n="cl.ey">Trusted Partners</div><h2 class="sh" data-i18n="cl.h2">Companies That Run <span>On Our Trucks</span></h2></div>
+    <div class="cl-grid sg rv">
+      <div class="cl-p"><div class="cl-tag">MFG &middot; ALUMINIUM</div><div class="cl-name">Maan Aluminium</div></div>
+      <div class="cl-p"><div class="cl-tag">CHEMICALS</div><div class="cl-name">Sanchi Chemicals</div></div>
+      <div class="cl-p"><div class="cl-tag">MFG &middot; PRINT</div><div class="cl-name">Parag Copigraph</div></div>
+      <div class="cl-p"><div class="cl-tag">MFG &middot; PUMPS</div><div class="cl-name">Shakti Pumps</div></div>
+      <div class="cl-p cm"><div class="cl-tag" data-i18n="cl.more">+ MANY MORE</div><div class="cl-name" data-i18n="cl.moredesc">500+ companies served across India &mdash; domestic &amp; international</div></div>
+    </div>
+    <div class="tm-grid sg rv">
+      <div class="tm-card"><div class="tm-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tm-qm">&ldquo;</div><p class="qt" data-i18n="cl1q">Express Goods Carrier has been our logistics backbone for a decade. Service first, pay later &mdash; no other carrier offers this. Never faced an uncommunicated delay.</p><div class="tm-who"><strong data-i18n="cl1n">Procurement Head</strong><span>Maan Aluminium &middot; Pithampur</span></div></div>
+      <div class="tm-card"><div class="tm-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tm-qm">&ldquo;</div><p class="qt" data-i18n="cl2q">Chemical cargo needs absolute care and documentation precision. EGC delivers both consistently. Competitive rates with zero compliance compromise.</p><div class="tm-who"><strong data-i18n="cl2n">Operations Manager</strong><span>Sanchi Chemicals &middot; MP</span></div></div>
+      <div class="tm-card"><div class="tm-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tm-qm">&ldquo;</div><p class="qt" data-i18n="cl3q">We&rsquo;ve tried multiple carriers. None match EGC&rsquo;s reliability and transparency. They pick up the phone, deliver on time, pricing is honest. Partners for life.</p><div class="tm-who"><strong data-i18n="cl3n">Logistics Director</strong><span data-i18n="cl3s">Industrial Manufacturer &middot; MP</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─────────────────────────────────────────────────────── -->
+<section class="sec tm-section" id="testimonials">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:44px;">
+      <div class="ey" data-i18n="tm.ey">What Our Clients Say</div>
+      <h2 class="sh" data-i18n="tm.h2">Trusted By <span>India's Industry</span></h2>
+      <p style="color:var(--muted);font-size:15.5px;" data-i18n="tm.sub">Manufacturers, exporters, and businesses across India rely on us every day.</p>
+    </div>
+    <div class="tm-grid sg rv">
+      <div class="tmc">
+        <div class="tmc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="tmc-qm">&ldquo;</div>
+        <p class="qt" data-i18n="tm1q">Their service-first approach is unlike anything we have experienced. Cargo dispatched before billing — that is real trust. On-time, every single time.</p>
+        <div class="tmc-sep"></div>
+        <div class="tmc-who"><strong data-i18n="tm1n">[Client Name]</strong><span data-i18n="tm1r">Procurement Head &mdash; [Company], Pithampur</span></div>
+      </div>
+      <div class="tmc">
+        <div class="tmc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="tmc-qm">&ldquo;</div>
+        <p class="qt" data-i18n="tm2q">Chemical cargo requires absolute precision and compliance. EGC delivers both consistently. Competitive rates, zero compromise on safety.</p>
+        <div class="tmc-sep"></div>
+        <div class="tmc-who"><strong data-i18n="tm2n">[Client Name]</strong><span data-i18n="tm2r">Operations Manager &mdash; [Company], MP</span></div>
+      </div>
+      <div class="tmc">
+        <div class="tmc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="tmc-qm">&ldquo;</div>
+        <p class="qt" data-i18n="tm3q">We have worked with multiple carriers. None match their reliability and transparency. A true long-term logistics partner.</p>
+        <div class="tmc-sep"></div>
+        <div class="tmc-who"><strong data-i18n="tm3n">[Client Name]</strong><span data-i18n="tm3r">Logistics Director &mdash; [Company], India</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── WHY US ────────────────────────────────────────────────── -->
+<section class="sec alt2" id="why">
+  <div class="wrap">
+    <div class="wy-grid">
+      <div>
+        <div class="rv" style="margin-bottom:36px;"><div class="ey" data-i18n="wy.ey">Why Choose Us</div><h2 class="sh" data-i18n="wy.h2">Trust Built Over <span>Two Decades</span></h2></div>
+        <div class="wi-list sg rv">
+          <div class="wi"><div class="wi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="wi-txt"><strong data-i18n="wy1t">Service First, Charges Later</strong><p data-i18n="wy1d">We dispatch before billing. No other carrier in India offers this level of trust.</p></div></div>
+          <div class="wi"><div class="wi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="wi-txt"><strong data-i18n="wy2t">Lowest Fair Rates</strong><p data-i18n="wy2d">Transparent, competitive pricing with no hidden fees &mdash; among the best in India.</p></div></div>
+          <div class="wi"><div class="wi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="wi-txt"><strong data-i18n="wy3t">20+ Years On Indian Roads</strong><p data-i18n="wy3d">Decades of experience means we know every route, every challenge.</p></div></div>
+          <div class="wi"><div class="wi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="wi-txt"><strong data-i18n="wy4t">Pan-India + International</strong><p data-i18n="wy4d">28+ states, domestic and cross-border &mdash; one team for the entire journey.</p></div></div>
+          <div class="wi"><div class="wi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="wi-txt"><strong data-i18n="wy5t">Dedicated Per-Consignment Support</strong><p data-i18n="wy5d">One contact from booking to final delivery sign-off.</p></div></div>
+          <div class="wi"><div class="wi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="wi-txt"><strong data-i18n="wy6t">Trusted By India&rsquo;s Manufacturers</strong><p data-i18n="wy6d">500+ companies including large manufacturers and international clients.</p></div></div>
+        </div>
+      </div>
+      <div class="wy-side rv">
+        <div class="big">20+</div>
+        <p data-i18n="wy.sidep1">Years of trust built one consignment at a time &mdash; from regional carrier to pan-India freight partner for India&rsquo;s industrial sector.</p>
+        <div class="lane" style="margin:16px 0;"></div>
+        <p data-i18n="wy.sidep2"><strong style="color:#fff;">Fair charges, every time.</strong> No inflated rates, no billing surprises &mdash; honest pricing built on long-term relationships.</p>
+        <div style="margin-top:18px;display:flex;flex-direction:column;gap:8px;">
+          <a href="#quote" class="btn-a btn-blk" data-i18n="wy.btn1">Get A Freight Quote</a>
+          <a href="https://wa.me/919826024265?text=Hi+I+need+a+freight+quote" target="_blank" rel="noopener" class="wa-btn btn-blk">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.528 5.849L.057 23.998l6.305-1.654A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.892 0-3.651-.523-5.148-1.43l-.369-.219-3.821 1.002.961-3.712-.241-.386A9.983 9.983 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <span data-i18n="wy.btn2">WhatsApp Us</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROCESS ───────────────────────────────────────────────── -->
+<section class="sec alt" id="process">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:44px;text-align:center;">
+      <div class="ey" style="justify-content:center;" data-i18n="pr.ey">Simple. Transparent. Reliable.</div>
+      <h2 class="sh" style="text-align:center;" data-i18n="pr.h2">How It Works</h2>
+      <p style="color:var(--muted);font-size:15px;max-width:520px;margin:0 auto;" data-i18n="pr.sub">Five steps from your first call to confirmed delivery.</p>
+    </div>
+    <div class="pr-grid-5 sg rv">
+      <div class="pr-step">
+        <span class="ps-n">STEP 01</span>
+        <div class="ps-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.1 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+        <h3 data-i18n="pr1t">Request</h3>
+        <p  data-i18n="pr1d">Call or submit a quote online. Tell us what, where and when.</p>
+      </div>
+      <div class="pr-step">
+        <span class="ps-n">STEP 02</span>
+        <div class="ps-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <h3 data-i18n="pr2t">Approval</h3>
+        <p  data-i18n="pr2d">We confirm availability and provide a transparent rate — within the hour.</p>
+      </div>
+      <div class="pr-step">
+        <span class="ps-n">STEP 03</span>
+        <div class="ps-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3 data-i18n="pr3t">Pickup</h3>
+        <p  data-i18n="pr3d">Our truck arrives at your facility. Loading and dispatch handled — before any billing.</p>
+      </div>
+      <div class="pr-step">
+        <span class="ps-n">STEP 04</span>
+        <div class="ps-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3 data-i18n="pr4t">Transit</h3>
+        <p  data-i18n="pr4d">Cargo is moving. Our team coordinates and provides updates throughout.</p>
+      </div>
+      <div class="pr-step">
+        <span class="ps-n">STEP 05</span>
+        <div class="ps-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="6" width="14" height="10"/><path d="M15 9h4l3 3v4H15"/><circle cx="5.5" cy="18" r="1.8"/><circle cx="18.5" cy="18" r="1.8"/></svg></div>
+        <h3 data-i18n="pr5t">Delivery</h3>
+        <p  data-i18n="pr5d">Safe arrival confirmed. Invoice raised only after successful delivery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY ───────────────────────────────────────────────── -->
+<section class="sec" id="gallery">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:40px;"><div class="ey" data-i18n="gl.ey">Gallery</div><h2 class="sh" data-i18n="gl.h2">Trucks, Yards &amp; <span>Active Operations</span></h2></div>
+    <div class="gl-grid sg rv">
+      <div class="gl-tile w2" style="background:linear-gradient(135deg,rgba(245,147,10,.1),var(--d4));"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="6" width="14" height="10"/><path d="M15 9h4l3 3v4h-7"/><circle cx="5.5" cy="18" r="1.8"/><circle cx="18.5" cy="18" r="1.8"/></svg><span data-i18n="gl1">Heavy Fleet &mdash; Multi-Axle Rigs</span></div>
+      <div class="gl-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span data-i18n="gl2">Dispatch Control</span></div>
+      <div class="gl-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span data-i18n="gl3">Cargo Loading</span></div>
+      <div class="gl-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 010 20"/></svg><span data-i18n="gl4">Pan-India Network</span></div>
+      <div class="gl-tile w2" style="background:linear-gradient(135deg,rgba(245,147,10,.07),var(--d4));"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg><span data-i18n="gl5">Pithampur Industrial Belt &mdash; Daily Dispatch</span></div>
+      <div class="gl-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span data-i18n="gl6">Docs &amp; Compliance</span></div>
+      <div class="gl-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 22s8-4.5 8-12V5l-8-3-8 3v5c0 7.5 8 12 8 12z"/></svg><span data-i18n="gl7">Secure Handling</span></div>
+      <div class="gl-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span data-i18n="gl8">Express Dispatch</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── QUOTE FORM ─────────────────────────────────────────────── -->
+<section class="sec alt2" id="quote">
+  <div class="wrap">
+    <div class="qf-grid">
+      <div class="rv">
+        <div class="ey" data-i18n="qf.ey">Instant Quote</div>
+        <h2 class="qf-side" data-i18n="qf.h2">Get A Freight Quote<br><span>In Minutes</span></h2>
+        <p style="color:var(--muted);font-size:15px;line-height:1.7;margin:14px 0 20px;" data-i18n="qf.sub">Fill the form &mdash; we call back with a rate. Competitive, transparent, zero hidden charges.</p>
+        <div class="ck-list">
+          <div class="ck"><div class="ck-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p data-i18n="qf.ck1">Lowest competitive rates across India</p></div>
+          <div class="ck"><div class="ck-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p data-i18n="qf.ck2">Service dispatched first &mdash; payment after delivery</p></div>
+          <div class="ck"><div class="ck-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p data-i18n="qf.ck3">FTL, PTL, express &amp; heavy cargo available</p></div>
+          <div class="ck"><div class="ck-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p data-i18n="qf.ck4">Domestic &amp; international routes covered</p></div>
+        </div>
+      </div>
+      <div class="rv">
+        <div class="qf-card">
+          <h3 data-i18n="qf.title">Freight Quote Request</h3>
+          <div class="fr">
+            <div class="fd"><label data-i18n="qf.lname">Your Name *</label><input type="text" id="qn" placeholder="Full name" data-i18n-ph="qf.phname"></div>
+            <div class="fd"><label data-i18n="qf.lphone">Phone Number *</label><input type="tel" id="qp" placeholder="+91 XXXXX XXXXX"></div>
+          </div>
+          <div class="fr">
+            <div class="fd"><label data-i18n="qf.lpickup">Pickup Location *</label><input type="text" id="qf" placeholder="City / State" data-i18n-ph="qf.phcity"></div>
+            <div class="fd"><label data-i18n="qf.ldest">Destination *</label><input type="text" id="qt2" placeholder="City / State" data-i18n-ph="qf.phcity"></div>
+          </div>
+          <div class="fr">
+            <div class="fd"><label data-i18n="qf.lcargo">Cargo Type</label><select id="qc"><option value="" data-i18n="qf.optcargo">Select cargo type</option><option data-i18n="qf.c1">Raw Materials / Metals</option><option data-i18n="qf.c2">Chemicals / Industrial Liquids</option><option data-i18n="qf.c3">Machinery &amp; Equipment</option><option data-i18n="qf.c4">Consumer Goods / FMCG</option><option data-i18n="qf.c5">Construction Materials</option><option data-i18n="qf.c6">Agricultural Products</option><option data-i18n="qf.c7">Auto Parts / Components</option><option data-i18n="qf.c8">Other Industrial Cargo</option></select></div>
+            <div class="fd"><label data-i18n="qf.lservice">Service Type</label><select id="qs"><option value="" data-i18n="qf.optservice">Select service</option><option data-i18n="qf.s1">Full Truck Load (FTL)</option><option data-i18n="qf.s2">Part Truck Load (PTL)</option><option data-i18n="qf.s3">Express Delivery</option><option data-i18n="qf.s4">Heavy / ODC Cargo</option><option data-i18n="qf.s5">International Cargo</option></select></div>
+          </div>
+          <div class="fd"><label data-i18n="qf.ldetails">Additional Details</label><textarea id="qm" placeholder="Weight, dimensions, special handling, timeline..." data-i18n-ph="qf.phdetails"></textarea></div>
+          <div class="fb">
+            <button type="button" class="btn-a" onclick="doQuote()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              <span data-i18n="qf.send">Send Quote Request</span>
+            </button>
+            <a href="https://wa.me/919826024265?text=Hi+I+need+a+freight+quote" target="_blank" rel="noopener" class="wa-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.528 5.849L.057 23.998l6.305-1.654A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.892 0-3.651-.523-5.148-1.43l-.369-.219-3.821 1.002.961-3.712-.241-.386A9.983 9.983 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+              WhatsApp
+            </a>
+          </div>
+          <div class="fnote" data-i18n="qf.note">Your details go directly to our team. We call back within the hour.</div>
+          <div class="fst" id="fst"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT BANNER ────────────────────────────────────────── -->
+<div class="ct-banner" id="contact">
+  <div class="wrap">
+    <div class="ct-inner rv">
+      <div class="ct-txt">
+        <h2 data-i18n="ct.h2">Ready To Move Your Cargo? <span>Call Us Now.</span></h2>
+        <p data-i18n="ct.sub">Same-day truck dispatch &middot; Service first &middot; Charges after delivery</p>
+      </div>
+      <div class="ph-row">
+        <a href="tel:+919826024265" class="ph-btn"><span class="ph-lbl" data-i18n="ct.l1">Primary Line</span><span class="ph-num">+91 98260 24265</span></a>
+        <a href="tel:+919424594681" class="ph-btn"><span class="ph-lbl" data-i18n="ct.l2">Alternate Line</span><span class="ph-num">+91 94245 94681</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ────────────────────────────────────────────────── -->
+<footer>
+  <div class="wrap">
+    <div class="ft-top">
+      <div class="ft-brand">
+<img src="">
+        <p data-i18n="ft.p">Pan-India industrial freight with 20+ years of trust. Service first, charges after safe delivery &mdash; domestic &amp; international.</p>
+        <div class="ft-sub" data-i18n="ft.sub">Loading &middot; Moving &middot; Delivering</div>
+      </div>
+      <div class="ft-col">
+        <h4 data-i18n="ft.h1">Services</h4>
+        <a href="ftl.html" data-i18n="sv1t">Full Truck Load (FTL)</a>
+        <a href="ptl.html" data-i18n="sv2t">Part Truck Load (PTL)</a>
+        <a href="industrial.html" data-i18n="sv3t">Industrial &amp; Heavy Cargo</a>
+        <a href="express.html" data-i18n="sv4t">Express Delivery</a>
+        <a href="international.html" data-i18n="sv5t">International Cargo</a>
+      </div>
+      <div class="ft-col">
+        <h4 data-i18n="ft.h2">Contact</h4>
+        <a href="tel:+919826024265">+91 98260 24265</a>
+        <a href="tel:+919424594681">+91 94245 94681</a>
+        <a href="https://wa.me/919826024265" target="_blank" rel="noopener" data-i18n="ft.wa">WhatsApp Enquiry</a>
+        <p style="margin-top:8px;" data-i18n="ft.addr">Pithampur Industrial Area<br>Madhya Pradesh, India</p>
+      </div>
+      <div class="ft-col">
+        <h4 data-i18n="ft.h3">Quick Links</h4>
+        <a href="#about" data-i18n="nv.about">About Us</a>
+        <a href="#services" data-i18n="nv.services">Services</a>
+        <a href="#fleet" data-i18n="nv.fleet">Fleet</a>
+        <a href="#network" data-i18n="nv.network">Network</a>
+        <a href="#gallery" data-i18n="nv.gallery">Gallery</a>
+        <a href="#quote" data-i18n="cta.nav">Get A Quote</a>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span data-i18n="ft.c1">&copy; 2026 Express Goods Carrier &mdash; All Routes Covered.</span>
+      <span data-i18n="ft.c2">Service First &middot; Charges Later &middot; 20+ Years Trusted</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── FLOATING BUTTONS ──────────────────────────────────────── -->
+<div class="fl-stack">
+  <a href="tel:+919826024265" class="fl fl-emg" id="flEmg" aria-label="Emergency Support">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span class="flbl-e" data-i18n="emg">Emergency Support</span>
+  </a>
+
+  <a href="https://wa.me/919826024265?text=Hi+I+need+a+freight+quote+from+Express+Goods+Carrier" target="_blank" rel="noopener" class="fl fl-wa" id="flWa">
+    <span class="ring"></span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.528 5.849L.057 23.998l6.305-1.654A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.892 0-3.651-.523-5.148-1.43l-.369-.219-3.821 1.002.961-3.712-.241-.386A9.983 9.983 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+    <span class="flbl">WhatsApp</span>
+  </a>
+  <a href="tel:+919826024265" class="fl fl-call" id="flCall">
+    <span class="ring"></span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.95.33 1.88.61 2.78a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.28 1.83.48 2.78.61A2 2 0 0122 16.92z"/></svg>
+    <span class="flbl">Call Now</span>
+  </a>
+</div>
+
+<script>
+/* ── PRELOADER ─────────────────────────── */
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    document.getElementById('pl').classList.add('done');
+  }, 1500);
+});
+
+/* ── SCROLL PROGRESS BAR ───────────────── */
+var spb = document.getElementById('spb');
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  spb.style.width = pct + '%';
+}, { passive: true });
+
+/* ── INTERSECTION OBSERVER — REVEAL ───── */
+var ro = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      ro.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.rv, .sg').forEach(function(el) {
+  ro.observe(el);
+});
+
+/* ── COUNT-UP (years stat) ─────────────── */
+var counted = false;
+var s1El = document.getElementById('s1');
+if (s1El) {
+  var co = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !counted) {
+      counted = true;
+      var n = 0;
+      var timer = setInterval(function() {
+        n++;
+        s1El.textContent = n;
+        if (n >= 20) clearInterval(timer);
+      }, 60);
+      co.disconnect();
+    }
+  }, { threshold: 0.5 });
+  co.observe(s1El);
+}
+
+/* ── BURGER MENU ───────────────────────── */
+var brg = document.getElementById('brg');
+var mob = document.getElementById('mob');
+brg.addEventListener('click', function() {
+  brg.classList.toggle('open');
+  mob.classList.toggle('open');
+});
+mob.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() {
+    brg.classList.remove('open');
+    mob.classList.remove('open');
+  });
+});
+
+/* ── FLOATING BUTTONS (show after hero) ─ */
+window.addEventListener('scroll', function() {
+  var show = window.scrollY > 500;
+  var fc = document.getElementById('flCall');
+  var fw = document.getElementById('flWa');
+  if (fc) {
+    if (show) fc.classList.add('vis');
+    else fc.classList.remove('vis');
+  }
+  if (fw) {
+    if (show) fw.classList.add('vis');
+    else fw.classList.remove('vis');
+  }
+}, { passive: true });
+
+/* ── SMOOTH SCROLL (offset for fixed nav) */
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var href = a.getAttribute('href');
+    if (href === '#') return;
+    var target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      window.scrollTo({ top: target.offsetTop - 68, behavior: 'smooth' });
+    }
+  });
+});
+
+/* ── QUOTE FORM → WhatsApp ─────────────── */
+function doQuote() {
+  // Phase 2: require login before placing an order. Reduces repeat typing —
+  // once signed in, name/phone are pre-filled from the saved profile.
+  TOS.requireAuth(doQuoteSubmit);
+}
+
+function doQuoteSubmit() {
+  var name  = (document.getElementById('qn').value  || '').trim();
+  var phone = (document.getElementById('qp').value  || '').trim();
+  var from  = (document.getElementById('qf').value  || '').trim();
+  var to    = (document.getElementById('qt2').value || '').trim();
+  var cargo = (document.getElementById('qc').value  || '');
+  var svc   = (document.getElementById('qs').value  || '');
+  var msg   = (document.getElementById('qm').value  || '').trim();
+  var st    = document.getElementById('fst');
+
+  if (!name || !phone || !from || !to) {
+    st.className = 'fst er';
+    st.textContent = '⚠ Please fill in Name, Phone, Pickup Location and Destination.';
+    return;
+  }
+
+  var wa = [
+    '🚛 *FREIGHT QUOTE — EXPRESS GOODS CARRIER*',
+    '',
+    '👤 *Name:* ' + name,
+    '📞 *Phone:* ' + phone,
+    '📍 *From:* ' + from,
+    '🏁 *To:* ' + to,
+    '📦 *Cargo:* ' + (cargo || 'Not specified'),
+    '🔧 *Service:* ' + (svc || 'Not specified'),
+    '📝 *Details:* ' + (msg || 'None'),
+    '',
+    '_Sent via website quote form_'
+  ].join('\n');
+
+  setTimeout(function() {
+    window.open('https://wa.me/919826024265?text=' + encodeURIComponent(wa), '_blank');
+    st.className = 'fst ok';
+    st.textContent = '✓ Quote request sent via WhatsApp! Our team will call you back shortly.';
+  }, 400);
+}
+
+/* ══ LANGUAGE ENGINE ════════════════════════════════════════════ */
+var T = {
+en:{
+  'pr.ey':'Simple. Transparent. Reliable.',
+  'pr.h2':'How It Works',
+  'pr.sub':'Five steps from your first call to confirmed delivery.',
+  'pr1t':'Request',   'pr1d':'Call or submit a quote online. Tell us what, where and when.',
+  'pr2t':'Approval',  'pr2d':'We confirm availability and provide a transparent rate — within the hour.',
+  'pr3t':'Pickup',    'pr3d':'Our truck arrives at your facility. Loading and dispatch handled — before any billing.',
+  'pr4t':'Transit',   'pr4d':'Cargo is moving. Our team coordinates and provides updates throughout.',
+  'pr5t':'Delivery',  'pr5d':'Safe arrival confirmed. Invoice raised only after successful delivery.',
+  'tm.ey':'What Our Clients Say',
+  'tm.h2':'Trusted By India\'s Industry',
+  'tm.sub':'Manufacturers, exporters, and businesses across India rely on us every day.',
+  'tm1q':'Their service-first approach is unlike anything we have experienced. Cargo dispatched before billing — that is real trust. On-time, every single time.',
+  'tm1n':'[Client Name]','tm1r':'Procurement Head — [Company], Pithampur',
+  'tm2q':'Chemical cargo requires absolute precision and compliance. EGC delivers both consistently. Competitive rates, zero compromise on safety.',
+  'tm2n':'[Client Name]','tm2r':'Operations Manager — [Company], MP',
+  'tm3q':'We have worked with multiple carriers. None match their reliability and transparency. A true long-term logistics partner.',
+  'tm3n':'[Client Name]','tm3r':'Logistics Director — [Company], India',
+  'emg':'Emergency Support',
+  'cta.nav':'Get A Quote',
+  'nv.home':'Home',
+  'nv.about':'About Us',
+  'nv.services':'Services',
+  'nv.fleet':'Fleet',
+  'nv.network':'Network',
+  'nv.gallery':'Gallery',
+  'nv.contact':'Contact',
+  'hr.h1':'India\'s Trusted <span class="amber">Freight Partner</span>',
+  'hr.tag':'Safe. Secure. On Time. Every Time.',
+  'hr.desc':'Pan-India Transport &amp; Logistics Solutions<br> for Industrial &amp; Commercial Goods.',
+  'hr.btn':'Get In Touch &nbsp;&rarr;',
+  'ab.ey':'About Express Goods Carrier',
+  'ab.h2':'Two Decades Of <span>Trust</span> On Indian Roads',
+  'ab.p1':'Express Goods Carrier has been moving industrial and commercial cargo across India for 20+ years. Based in Pithampur&rsquo;s industrial belt, we serve manufacturers, exporters, chemical companies, and businesses of all sizes.',
+  'ab.p2':'What sets us apart: <strong style="color:#fff;">we dispatch your cargo before billing you.</strong> Service first, charges after safe delivery &mdash; a promise that has earned 500+ client relationships built purely on trust.',
+  'ab.note':'Service First &middot; Charges After Safe Delivery &middot; Always.',
+  'ab.b1t':'Service First',
+  'ab.b1d':'We dispatch before billing &mdash; unmatched trust in Indian freight.',
+  'ab.b2t':'On-Time. Always.',
+  'ab.b2d':'98% on-time delivery across 28+ states, built on planning.',
+  'ab.b3t':'All India Network',
+  'ab.b3d':'Pan-India coverage for domestic and international cargo.',
+  'ab.b4t':'Fair Rates',
+  'ab.b4d':'Most competitive pricing in India &mdash; transparent, no hidden fees.',
+  'st.l1':'Years Experience',
+  'st.d1':'Trusted freight since early 2000s',
+  'st.l2':'States Covered',
+  'st.d2':'Active routes all over India',
+  'st.l3':'On-Time Delivery',
+  'st.d3':'Consistent every consignment',
+  'st.l4':'Companies Served',
+  'st.d4':'SMEs to large multinationals',
+  'sv.ey':'Our Services',
+  'sv.h2':'Built For Every Kind Of <span>Industrial Cargo</span>',
+  'sv.sub':'From a single pallet to a full multi-axle rig &mdash; right vehicle, right route, right team.',
+  'sv.more':'Learn More',
+  'sv.enquire':'Enquire',
+  'sv1t':'Full Truck Load (FTL)',
+  'sv1d':'Dedicated truck, exclusive cargo, point-to-point. Best for large industrial consignments.',
+  'sv2t':'Part Truck Load (PTL)',
+  'sv2d':'Smaller loads consolidated on shared trucks. Cost-efficient to every major destination.',
+  'sv3t':'Industrial &amp; Heavy Cargo',
+  'sv3d':'Machinery, chemicals, steel, and ODC loads &mdash; specialist vehicles, full compliance docs.',
+  'sv4t':'Express Delivery',
+  'sv4d':'Same-day dispatch for time-critical shipments with priority routing and constant updates.',
+  'sv5t':'International Cargo',
+  'sv5d':'Cross-border coordination &mdash; customs, border transit, freight forwarder liaison, end-to-end.',
+  'sv6t':'Dedicated Fleet',
+  'sv6d':'Long-term fleet assignment for manufacturers needing regular scheduled pickups, fully managed.',
+  'fl.ey':'Our Fleet',
+  'fl.h2':'Modern Trucks. Every <span>Load Size.</span>',
+  'fl.sub':'LCVs to multi-axle heavy rigs &mdash; the right vehicle, maintained and road-ready.',
+  'fl1n':'Light Commercial',
+  'fl1d':'Up to 3.5T &middot; City &amp; Short Haul',
+  'fl2n':'Medium Commercial',
+  'fl2d':'7&ndash;14T &middot; State &amp; Regional',
+  'fl3n':'Heavy Truck',
+  'fl3d':'16&ndash;22T &middot; Pan-India Highways',
+  'fl4n':'Multi-Axle Volvo',
+  'fl4d':'25&ndash;40T &middot; Heavy &amp; ODC Cargo',
+  'nw.ey':'Coverage Network',
+  'nw.h2':'Every Highway. <span>Every State.</span>',
+  'nw.sub':'Active freight routes &mdash; from manufacturing hubs to tier-2 cities, ports and border crossings.',
+  'nw.hqlbl':'Headquarters:',
+  'nw.hq':'Pithampur Industrial Area, Madhya Pradesh, India',
+  'nw.openmap':'Open in Maps &rarr;',
+  'nw.north':'NORTH',
+  'nw.west':'WEST',
+  'nw.south':'SOUTH',
+  'nw.east':'EAST',
+  'cl.ey':'Trusted Partners',
+  'cl.h2':'Companies That Run <span>On Our Trucks</span>',
+  'cl.more':'+ MANY MORE',
+  'cl.moredesc':'500+ companies served across India &mdash; domestic &amp; international',
+  'cl1q':'Express Goods Carrier has been our logistics backbone for a decade. Service first, pay later &mdash; no other carrier offers this. Never faced an uncommunicated delay.',
+  'cl1n':'Procurement Head',
+  'cl2q':'Chemical cargo needs absolute care and documentation precision. EGC delivers both consistently. Competitive rates with zero compliance compromise.',
+  'cl2n':'Operations Manager',
+  'cl3q':'We&rsquo;ve tried multiple carriers. None match EGC&rsquo;s reliability and transparency. They pick up the phone, deliver on time, pricing is honest. Partners for life.',
+  'cl3n':'Logistics Director',
+  'cl3s':'Industrial Manufacturer &middot; MP',
+  'wy.ey':'Why Choose Us',
+  'wy.h2':'Trust Built Over <span>Two Decades</span>',
+  'wy1t':'Service First, Charges Later',
+  'wy1d':'We dispatch before billing. No other carrier in India offers this level of trust.',
+  'wy2t':'Lowest Fair Rates',
+  'wy2d':'Transparent, competitive pricing with no hidden fees &mdash; among the best in India.',
+  'wy3t':'20+ Years On Indian Roads',
+  'wy3d':'Decades of experience means we know every route, every challenge.',
+  'wy4t':'Pan-India + International',
+  'wy4d':'28+ states, domestic and cross-border &mdash; one team for the entire journey.',
+  'wy5t':'Dedicated Per-Consignment Support',
+  'wy5d':'One contact from booking to final delivery sign-off.',
+  'wy6t':'Trusted By India&rsquo;s Manufacturers',
+  'wy6d':'500+ companies including large manufacturers and international clients.',
+  'wy.sidep1':'Years of trust built one consignment at a time &mdash; from regional carrier to pan-India freight partner for India&rsquo;s industrial sector.',
+  'wy.sidep2':'<strong style="color:#fff;">Fair charges, every time.</strong> No inflated rates, no billing surprises &mdash; honest pricing built on long-term relationships.',
+  'wy.btn1':'Get A Freight Quote',
+  'wy.btn2':'WhatsApp Us',
+  'gl.ey':'Gallery',
+  'gl.h2':'Trucks, Yards &amp; <span>Active Operations</span>',
+  'gl1':'Heavy Fleet &mdash; Multi-Axle Rigs',
+  'gl2':'Dispatch Control',
+  'gl3':'Cargo Loading',
+  'gl4':'Pan-India Network',
+  'gl5':'Pithampur Industrial Belt &mdash; Daily Dispatch',
+  'gl6':'Docs &amp; Compliance',
+  'gl7':'Secure Handling',
+  'gl8':'Express Dispatch',
+  'qf.ey':'Instant Quote',
+  'qf.h2':'Get A Freight Quote<br><span>In Minutes</span>',
+  'qf.sub':'Fill the form &mdash; we call back with a rate. Competitive, transparent, zero hidden charges.',
+  'qf.ck1':'Lowest competitive rates across India',
+  'qf.ck2':'Service dispatched first &mdash; payment after delivery',
+  'qf.ck3':'FTL, PTL, express &amp; heavy cargo available',
+  'qf.ck4':'Domestic &amp; international routes covered',
+  'qf.title':'Freight Quote Request',
+  'qf.lname':'Your Name *',
+  'qf.lphone':'Phone Number *',
+  'qf.lpickup':'Pickup Location *',
+  'qf.ldest':'Destination *',
+  'qf.lcargo':'Cargo Type',
+  'qf.lservice':'Service Type',
+  'qf.ldetails':'Additional Details',
+  'qf.optcargo':'Select cargo type',
+  'qf.optservice':'Select service',
+  'qf.c1':'Raw Materials / Metals',
+  'qf.c2':'Chemicals / Industrial Liquids',
+  'qf.c3':'Machinery &amp; Equipment',
+  'qf.c4':'Consumer Goods / FMCG',
+  'qf.c5':'Construction Materials',
+  'qf.c6':'Agricultural Products',
+  'qf.c7':'Auto Parts / Components',
+  'qf.c8':'Other Industrial Cargo',
+  'qf.s1':'Full Truck Load (FTL)',
+  'qf.s2':'Part Truck Load (PTL)',
+  'qf.s3':'Express Delivery',
+  'qf.s4':'Heavy / ODC Cargo',
+  'qf.s5':'International Cargo',
+  'qf.send':'Send Quote Request',
+  'qf.note':'Your details go directly to our team. We call back within the hour.',
+  'qf.phname':'Full name',
+  'qf.phcity':'City / State',
+  'qf.phdetails':'Weight, dimensions, special handling, timeline...',
+  'ct.h2':'Ready To Move Your Cargo? <span>Call Us Now.</span>',
+  'ct.sub':'Same-day truck dispatch &middot; Service first &middot; Charges after delivery',
+  'ct.l1':'Primary Line',
+  'ct.l2':'Alternate Line',
+  'ft.p':'Pan-India industrial freight with 20+ years of trust. Service first, charges after safe delivery &mdash; domestic &amp; international.',
+  'ft.sub':'Loading &middot; Moving &middot; Delivering',
+  'ft.h1':'Services',
+  'ft.h2':'Contact',
+  'ft.h3':'Quick Links',
+  'ft.wa':'WhatsApp Enquiry',
+  'ft.addr':'Pithampur Industrial Area<br>Madhya Pradesh, India',
+  'ft.c1':'&copy; 2026 Express Goods Carrier &mdash; All Routes Covered.',
+  'ft.c2':'Service First &middot; Charges Later &middot; 20+ Years Trusted'
+},
+hi:{
+  'pr.ey':'सरल। पारदर्शी। विश्वसनीय।',
+  'pr.h2':'यह कैसे काम करता है',
+  'pr.sub':'आपकी पहली कॉल से डिलीवरी पुष्टि तक पांच सरल चरण।',
+  'pr1t':'अनुरोध',    'pr1d':'हमें कॉल करें या ऑनलाइन कोटेशन जमा करें।',
+  'pr2t':'स्वीकृति', 'pr2d':'हम उपलब्धता की पुष्टि करते हैं और एक घंटे में पारदर्शी दर देते हैं।',
+  'pr3t':'पिकअप',    'pr3d':'हमारा ट्रक आपकी सुविधा पर पहुंचता है। लोडिंग और प्रेषण — बिलिंग से पहले।',
+  'pr4t':'पारगमन',   'pr4d':'माल रास्ते में है। हमारी टीम समन्वय करती है और अपडेट देती है।',
+  'pr5t':'डिलीवरी', 'pr5d':'सुरक्षित आगमन की पुष्टि। सफल डिलीवरी के बाद ही इनवॉइस।',
+  'tm.ey':'हमारे ग्राहक क्या कहते हैं',
+  'tm.h2':'भारत के उद्योग का',
+  'tm.sub':'पूरे भारत में निर्माताओं, निर्यातकों और व्यवसायों का भरोसा।',
+  'tm1q':'उनकी सेवा प्रथम नीति अद्वितीय है। बिलिंग से पहले माल — यही सच्चा भरोसा है। समय पर, हर बार।',
+  'tm1n':'[ग्राहक नाम]','tm1r':'खरीद प्रमुख — [कंपनी], पीथमपुर',
+  'tm2q':'रसायन माल के लिए पूर्ण परिशुद्धता चाहिए। वे दोनों लगातार देते हैं। प्रतिस्पर्धी दरें, सुरक्षा में शून्य समझौता।',
+  'tm2n':'[ग्राहक नाम]','tm2r':'संचालन प्रबंधक — [कंपनी], MP',
+  'tm3q':'हमने कई वाहकों के साथ काम किया। कोई भी उनकी विश्वसनीयता से मेल नहीं खाता। सच्चे दीर्घकालिक भागीदार।',
+  'tm3n':'[ग्राहक नाम]','tm3r':'लॉजिस्टिक्स निदेशक — [कंपनी], भारत',
+  'emg':'आपातकालीन सहायता',
+  'cta.nav':'कोटेशन प्राप्त करें',
+  'nv.home':'होम',
+  'nv.about':'हमारे बारे में',
+  'nv.services':'सेवाएं',
+  'nv.fleet':'फ्लीट',
+  'nv.network':'नेटवर्क',
+  'nv.gallery':'गैलरी',
+  'nv.contact':'संपर्क करें',
+  'hr.h1':'भारत का भरोसेमंद <span class="amber">फ्रेट पार्टनर</span>',
+  'hr.tag':'सुरक्षित। भरोसेमंद। हर बार समय पर।',
+  'hr.desc':'औद्योगिक एवं व्यावसायिक माल के लिए<br> संपूर्ण भारत परिवहन एवं लॉजिस्टिक्स समाधान।',
+  'hr.btn':'संपर्क करें &nbsp;&rarr;',
+  'ab.ey':'एक्सप्रेस गुड्स कैरियर के बारे में',
+  'ab.h2':'भारतीय सड़कों पर दो दशकों का <span>भरोसा</span>',
+  'ab.p1':'एक्सप्रेस गुड्स कैरियर 20+ वर्षों से पूरे भारत में औद्योगिक और व्यावसायिक माल परिवहन कर रहा है। पीथमपुर के औद्योगिक क्षेत्र में स्थित, हम निर्माताओं, निर्यातकों, रसायन कंपनियों और सभी आकार के व्यवसायों की सेवा करते हैं।',
+  'ab.p2':'हमें अलग बनाता है: <strong style="color:#fff;">हम बिलिंग से पहले आपका माल भेजते हैं।</strong> पहले सेवा, सुरक्षित डिलीवरी के बाद शुल्क — एक वादा जिसने 500+ ग्राहकों का भरोसा जीता है।',
+  'ab.note':'पहले सेवा &middot; सुरक्षित डिलीवरी के बाद शुल्क &middot; हमेशा।',
+  'ab.b1t':'पहले सेवा',
+  'ab.b1d':'हम बिलिंग से पहले माल भेजते हैं &mdash; भारतीय फ्रेट में अद्वितीय भरोसा।',
+  'ab.b2t':'समय पर। हमेशा।',
+  'ab.b2d':'28+ राज्यों में 98% समय पर डिलीवरी, सुनियोजित योजना पर आधारित।',
+  'ab.b3t':'अखिल भारतीय नेटवर्क',
+  'ab.b3d':'घरेलू व अंतरराष्ट्रीय माल के लिए संपूर्ण भारत कवरेज।',
+  'ab.b4t':'उचित दरें',
+  'ab.b4d':'भारत में सबसे प्रतिस्पर्धी मूल्य &mdash; पारदर्शी, कोई छिपा शुल्क नहीं।',
+  'st.l1':'वर्षों का अनुभव',
+  'st.d1':'2000 के दशक से भरोसेमंद फ्रेट सेवा',
+  'st.l2':'राज्य कवर किए गए',
+  'st.d2':'पूरे भारत में सक्रिय रूट्स',
+  'st.l3':'समय पर डिलीवरी',
+  'st.d3':'हर खेप में निरंतरता',
+  'st.l4':'कंपनियों को सेवा',
+  'st.d4':'छोटे उद्यमों से बड़ी बहुराष्ट्रीय कंपनियों तक',
+  'sv.ey':'हमारी सेवाएं',
+  'sv.h2':'हर प्रकार के <span>औद्योगिक माल</span> के लिए तैयार',
+  'sv.sub':'एक पैलेट से लेकर पूर्ण मल्टी-एक्सल रिग तक &mdash; सही वाहन, सही रूट, सही टीम।',
+  'sv.more':'और जानें',
+  'sv.enquire':'पूछें',
+  'sv1t':'फुल ट्रक लोड (FTL)',
+  'sv1d':'समर्पित ट्रक, एकमात्र माल, सीधी डिलीवरी। बड़ी औद्योगिक खेप के लिए सर्वश्रेष्ठ।',
+  'sv2t':'पार्ट ट्रक लोड (PTL)',
+  'sv2d':'छोटे माल को साझा ट्रकों पर एकत्रित किया जाता है। हर प्रमुख स्थान तक किफायती।',
+  'sv3t':'औद्योगिक एवं भारी माल',
+  'sv3d':'मशीनरी, रसायन, स्टील और ODC माल &mdash; विशेषज्ञ वाहन, पूर्ण अनुपालन दस्तावेज़।',
+  'sv4t':'एक्सप्रेस डिलीवरी',
+  'sv4d':'समय-संवेदनशील खेप के लिए उसी दिन प्रेषण, प्राथमिकता रूटिंग और निरंतर अपडेट।',
+  'sv5t':'अंतरराष्ट्रीय माल',
+  'sv5d':'सीमा-पार समन्वय &mdash; कस्टम, सीमा पारगमन, फ्रेट फॉरवर्डर संपर्क, पूर्ण सेवा।',
+  'sv6t':'समर्पित फ्लीट',
+  'sv6d':'नियमित निर्धारित पिकअप की आवश्यकता वाले निर्माताओं के लिए दीर्घकालिक फ्लीट, पूर्णतः प्रबंधित।',
+  'fl.ey':'हमारा फ्लीट',
+  'fl.h2':'आधुनिक ट्रक। हर <span>भार आकार।</span>',
+  'fl.sub':'LCV से मल्टी-एक्सल भारी रिग तक &mdash; सही वाहन, सुव्यवस्थित और सड़क-तैयार।',
+  'fl1n':'लाइट कमर्शियल',
+  'fl1d':'3.5T तक &middot; शहर एवं छोटी दूरी',
+  'fl2n':'मीडियम कमर्शियल',
+  'fl2d':'7&ndash;14T &middot; राज्य एवं क्षेत्रीय',
+  'fl3n':'भारी ट्रक',
+  'fl3d':'16&ndash;22T &middot; अखिल भारतीय हाईवे',
+  'fl4n':'मल्टी-एक्सल वॉल्वो',
+  'fl4d':'25&ndash;40T &middot; भारी एवं ODC माल',
+  'nw.ey':'कवरेज नेटवर्क',
+  'nw.h2':'हर हाईवे। <span>हर राज्य।</span>',
+  'nw.sub':'सक्रिय फ्रेट रूट &mdash; निर्माण केंद्रों से टियर-2 शहरों, बंदरगाहों और सीमा पार तक।',
+  'nw.hqlbl':'मुख्यालय:',
+  'nw.hq':'पीथमपुर औद्योगिक क्षेत्र, मध्य प्रदेश, भारत',
+  'nw.openmap':'मैप्स में खोलें &rarr;',
+  'nw.north':'उत्तर',
+  'nw.west':'पश्चिम',
+  'nw.south':'दक्षिण',
+  'nw.east':'पूर्व',
+  'cl.ey':'भरोसेमंद साझेदार',
+  'cl.h2':'कंपनियां जो <span>हमारे ट्रकों पर चलती हैं</span>',
+  'cl.more':'+ कई और',
+  'cl.moredesc':'पूरे भारत में 500+ कंपनियों को सेवा &mdash; घरेलू एवं अंतरराष्ट्रीय',
+  'cl1q':'एक्सप्रेस गुड्स कैरियर एक दशक से हमारी लॉजिस्टिक्स की रीढ़ है। पहले सेवा, बाद में भुगतान &mdash; कोई और कैरियर यह नहीं देता। कभी भी बिना सूचना देरी नहीं हुई।',
+  'cl1n':'खरीद प्रमुख',
+  'cl2q':'रसायन माल को पूर्ण देखभाल और सटीक दस्तावेज़ की आवश्यकता होती है। EGC दोनों लगातार प्रदान करता है। प्रतिस्पर्धी दरें, अनुपालन में कोई समझौता नहीं।',
+  'cl2n':'संचालन प्रबंधक',
+  'cl3q':'हमने कई कैरियर आज़माए। कोई भी EGC की विश्वसनीयता और पारदर्शिता से मेल नहीं खाता। वे फोन उठाते हैं, समय पर डिलीवर करते हैं, मूल्य निर्धारण सच्चा है। जीवनभर के साझेदार।',
+  'cl3n':'लॉजिस्टिक्स निदेशक',
+  'cl3s':'औद्योगिक निर्माता &middot; मध्य प्रदेश',
+  'wy.ey':'हमें क्यों चुनें',
+  'wy.h2':'<span>दो दशकों</span> में बना भरोसा',
+  'wy1t':'पहले सेवा, बाद में शुल्क',
+  'wy1d':'हम बिलिंग से पहले माल भेजते हैं। भारत में कोई अन्य कैरियर इस स्तर का भरोसा नहीं देता।',
+  'wy2t':'सबसे उचित दरें',
+  'wy2d':'पारदर्शी, प्रतिस्पर्धी मूल्य, कोई छिपा शुल्क नहीं &mdash; भारत में सर्वश्रेष्ठ में से एक।',
+  'wy3t':'भारतीय सड़कों पर 20+ वर्ष',
+  'wy3d':'दशकों का अनुभव यानी हम हर रूट, हर चुनौती को जानते हैं।',
+  'wy4t':'अखिल भारतीय + अंतरराष्ट्रीय',
+  'wy4d':'28+ राज्य, घरेलू एवं सीमा-पार &mdash; पूरी यात्रा के लिए एक ही टीम।',
+  'wy5t':'हर खेप के लिए समर्पित सहायता',
+  'wy5d':'बुकिंग से अंतिम डिलीवरी तक एक ही संपर्क।',
+  'wy6t':'भारत के निर्माताओं का भरोसा',
+  'wy6d':'बड़े निर्माताओं और अंतरराष्ट्रीय ग्राहकों सहित 500+ कंपनियां।',
+  'wy.sidep1':'एक-एक खेप से बना वर्षों का भरोसा &mdash; क्षेत्रीय कैरियर से भारत के औद्योगिक क्षेत्र के अखिल भारतीय फ्रेट पार्टनर तक।',
+  'wy.sidep2':'<strong style="color:#fff;">उचित शुल्क, हर बार।</strong> कोई बढ़ी हुई दरें नहीं, कोई बिलिंग आश्चर्य नहीं &mdash; दीर्घकालिक संबंधों पर आधारित सच्चा मूल्य निर्धारण।',
+  'wy.btn1':'फ्रेट कोटेशन प्राप्त करें',
+  'wy.btn2':'व्हाट्सएप करें',
+  'gl.ey':'गैलरी',
+  'gl.h2':'ट्रक, यार्ड एवं <span>सक्रिय परिचालन</span>',
+  'gl1':'भारी फ्लीट &mdash; मल्टी-एक्सल रिग',
+  'gl2':'प्रेषण नियंत्रण',
+  'gl3':'माल लोडिंग',
+  'gl4':'अखिल भारतीय नेटवर्क',
+  'gl5':'पीथमपुर औद्योगिक क्षेत्र &mdash; दैनिक प्रेषण',
+  'gl6':'दस्तावेज़ एवं अनुपालन',
+  'gl7':'सुरक्षित हैंडलिंग',
+  'gl8':'एक्सप्रेस प्रेषण',
+  'qf.ey':'त्वरित कोटेशन',
+  'qf.h2':'मिनटों में<br><span>फ्रेट कोटेशन प्राप्त करें</span>',
+  'qf.sub':'फॉर्म भरें &mdash; हम दर के साथ वापस कॉल करेंगे। प्रतिस्पर्धी, पारदर्शी, कोई छिपा शुल्क नहीं।',
+  'qf.ck1':'पूरे भारत में सबसे प्रतिस्पर्धी दरें',
+  'qf.ck2':'पहले सेवा &mdash; डिलीवरी के बाद भुगतान',
+  'qf.ck3':'FTL, PTL, एक्सप्रेस एवं भारी माल उपलब्ध',
+  'qf.ck4':'घरेलू एवं अंतरराष्ट्रीय रूट कवर',
+  'qf.title':'फ्रेट कोटेशन अनुरोध',
+  'qf.lname':'आपका नाम *',
+  'qf.lphone':'फोन नंबर *',
+  'qf.lpickup':'पिकअप स्थान *',
+  'qf.ldest':'गंतव्य *',
+  'qf.lcargo':'माल का प्रकार',
+  'qf.lservice':'सेवा का प्रकार',
+  'qf.ldetails':'अतिरिक्त विवरण',
+  'qf.optcargo':'माल प्रकार चुनें',
+  'qf.optservice':'सेवा चुनें',
+  'qf.c1':'कच्चा माल / धातु',
+  'qf.c2':'रसायन / औद्योगिक तरल',
+  'qf.c3':'मशीनरी एवं उपकरण',
+  'qf.c4':'उपभोक्ता सामान / FMCG',
+  'qf.c5':'निर्माण सामग्री',
+  'qf.c6':'कृषि उत्पाद',
+  'qf.c7':'ऑटो पार्ट्स / घटक',
+  'qf.c8':'अन्य औद्योगिक माल',
+  'qf.s1':'फुल ट्रक लोड (FTL)',
+  'qf.s2':'पार्ट ट्रक लोड (PTL)',
+  'qf.s3':'एक्सप्रेस डिलीवरी',
+  'qf.s4':'भारी / ODC माल',
+  'qf.s5':'अंतरराष्ट्रीय माल',
+  'qf.send':'कोटेशन अनुरोध भेजें',
+  'qf.note':'आपका विवरण सीधे हमारी टीम तक जाता है। हम एक घंटे के भीतर वापस कॉल करेंगे।',
+  'qf.phname':'पूरा नाम',
+  'qf.phcity':'शहर / राज्य',
+  'qf.phdetails':'वजन, आकार, विशेष हैंडलिंग, समय-सीमा...',
+  'ct.h2':'अपना माल भेजने के लिए तैयार? <span>अभी कॉल करें।</span>',
+  'ct.sub':'उसी दिन ट्रक प्रेषण &middot; पहले सेवा &middot; डिलीवरी के बाद शुल्क',
+  'ct.l1':'प्राथमिक लाइन',
+  'ct.l2':'वैकल्पिक लाइन',
+  'ft.p':'20+ वर्षों के भरोसे के साथ अखिल भारतीय औद्योगिक फ्रेट। पहले सेवा, सुरक्षित डिलीवरी के बाद शुल्क &mdash; घरेलू एवं अंतरराष्ट्रीय।',
+  'ft.sub':'लोडिंग &middot; मूविंग &middot; डिलीवरिंग',
+  'ft.h1':'सेवाएं',
+  'ft.h2':'संपर्क करें',
+  'ft.h3':'त्वरित लिंक',
+  'ft.wa':'व्हाट्सएप पूछताछ',
+  'ft.addr':'पीथमपुर औद्योगिक क्षेत्र<br>मध्य प्रदेश, भारत',
+  'ft.c1':'&copy; 2026 एक्सप्रेस गुड्स कैरियर &mdash; सभी रूट कवर।',
+  'ft.c2':'पहले सेवा &middot; बाद में शुल्क &middot; 20+ वर्षों का भरोसा'
+}
+};
+var EL = 'en';
+
+function applyLang(l){
+  document.body.classList.add('lsw');
+  setTimeout(function(){
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k=el.getAttribute('data-i18n');
+      if(T[l]&&T[l][k]!==undefined) el.innerHTML=T[l][k];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+      var k=el.getAttribute('data-i18n-ph');
+      if(T[l]&&T[l][k]!==undefined) el.setAttribute('placeholder',T[l][k]);
+    });
+    document.documentElement.lang=l;
+    document.body.classList.remove('lsw');
+  },150);
+}
+
+function setLang(l){
+  if(l===EL) return;
+  EL=l;
+  localStorage.setItem('egc_lang',l);
+  ['bten','bthi'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el) return;
+    var active=(id==='bten'&&l==='en')||(id==='bthi'&&l==='hi');
+    el.classList.toggle('on',active);
+    el.setAttribute('aria-pressed',active?'true':'false');
+  });
+  applyLang(l);
+}
+
+(function(){
+  var saved=localStorage.getItem('egc_lang')||'en';
+  if(saved!=='en'){ setLang(saved); }
+})();
+
+/* ── Emergency button visibility ─ */
+var flEmg=document.getElementById('flEmg');
+window.addEventListener('scroll',function(){
+  if(flEmg) flEmg.classList.toggle('vis',window.scrollY>500);
+},{passive:true});
+
+</script>
+
+<!-- Firebase — Phase 2: Authentication + Customer Portal Foundation -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="phase3-core.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
