@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbit Accounting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --amber:#f5930a; --amber-h:#ffaa2e; --amber-d:#d97a06;
+  --blk:#0a0b0e; --d1:#0d0f14; --d2:#12151b; --d3:#181c24; --d4:#1e222c;
+  --white:#ffffff; --muted:#8a9ab0; --muted2:#5a6478;
+  --green:#3dd68c; --red:#ff5c6c; --blue:#5b9dff; --violet:#a78bfa;
+  --line:rgba(255,255,255,.08); --linem:rgba(255,255,255,.13);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--blk);color:var(--white);font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+/* ── SHELL ── */
+.acc-shell{display:flex;min-height:100vh;}
+.acc-side{width:248px;flex:none;background:var(--d1);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.acc-main{flex:1;min-width:0;display:flex;flex-direction:column;}
+
+/* ── SIDEBAR ── */
+.side-head{padding:18px 18px 14px;border-bottom:1px solid var(--line);}
+.side-brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px;letter-spacing:-.3px;}
+.side-brand b{color:var(--amber);}
+.side-sub{font-size:10px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;margin-left:1px;}
+.side-back{display:flex;align-items:center;gap:7px;padding:11px 18px;font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line);transition:.15s;}
+.side-back:hover{color:var(--white);background:var(--d2);}
+.side-nav{padding:10px 10px 30px;flex:1;}
+.side-group{margin-top:16px;}
+.side-group:first-child{margin-top:6px;}
+.side-glabel{font-size:9.5px;color:var(--muted2);letter-spacing:1.4px;text-transform:uppercase;padding:0 10px 6px;font-weight:600;}
+.side-link{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--muted);font-size:13.5px;font-weight:500;cursor:pointer;transition:.14s var(--ease);position:relative;}
+.side-link svg{width:16px;height:16px;flex:none;opacity:.85;}
+.side-link:hover{background:var(--d2);color:var(--white);}
+.side-link.active{background:linear-gradient(90deg,rgba(245,147,10,.16),rgba(245,147,10,.04));color:var(--amber-h);font-weight:600;}
+.side-link.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:18px;background:var(--amber);border-radius:0 3px 3px 0;}
+
+/* ── TOPBAR ── */
+.acc-top{display:flex;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid var(--line);background:var(--d1);position:sticky;top:0;z-index:5;}
+.acc-title{font-size:17px;font-weight:700;letter-spacing:-.3px;}
+.acc-top-actions{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.acc-search{display:flex;align-items:center;gap:8px;background:var(--d3);border:1px solid var(--line);border-radius:9px;padding:7px 12px;width:240px;}
+.acc-search input{background:none;border:none;outline:none;color:var(--white);font-size:13px;width:100%;font-family:inherit;}
+.acc-search svg{width:15px;height:15px;color:var(--muted2);flex:none;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--line);background:var(--d3);color:var(--white);transition:.14s;font-family:inherit;}
+.btn:hover{border-color:var(--linem);background:var(--d4);}
+.btn-amber{background:var(--amber);color:#1a1205;border-color:transparent;}
+.btn-amber:hover{background:var(--amber-h);}
+.btn svg{width:14px;height:14px;}
+.btn-sm{padding:6px 10px;font-size:12px;}
+
+/* ── CONTENT ── */
+.acc-content{padding:24px;max-width:1180px;width:100%;}
+.acc-page{display:none;animation:fade .25s var(--ease);}
+.acc-page.on{display:block;}
+.acc-help{display:flex;align-items:center;gap:9px;background:rgba(245,147,10,.07);border:1px solid rgba(245,147,10,.18);border-radius:9px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:#c9d4e3;line-height:1.45;}
+.acc-help svg{width:16px;height:16px;flex:none;color:var(--amber-h,#ffb23e);}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:22px;}
+.kpi{background:var(--d2);border:1px solid var(--line);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden;}
+.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:600;}
+.kpi-value{font-size:25px;font-weight:800;margin-top:7px;letter-spacing:-.5px;}
+.kpi-sub{font-size:11.5px;color:var(--muted2);margin-top:3px;}
+.kpi.amber .kpi-value{color:var(--amber-h);}
+.kpi.green .kpi-value{color:var(--green);}
+.kpi.red .kpi-value{color:var(--red);}
+.kpi.blue .kpi-value{color:var(--blue);}
+
+/* ── CARD / TABLE ── */
+.card{background:var(--d2);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:18px;}
+.card-head{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);}
+.card-title{font-size:14px;font-weight:700;}
+.card-head .btn{margin-left:auto;}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{text-align:left;padding:10px 14px;font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted2);font-weight:600;border-bottom:1px solid var(--line);background:var(--d1);}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--line);color:var(--white);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,.02);}
+.tbl .num{text-align:right;font-family:'IBM Plex Mono';font-variant-numeric:tabular-nums;}
+.tbl .dr{color:var(--green);}
+.tbl .cr{color:var(--amber-h);}
+.tbl-foot td{font-weight:700;background:var(--d1);border-top:2px solid var(--linem);}
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600;}
+.pill-paid{background:rgba(61,214,140,.15);color:var(--green);}
+.pill-pending{background:rgba(245,147,10,.15);color:var(--amber-h);}
+.pill-partial{background:rgba(91,157,255,.15);color:var(--blue);}
+.pill-void{background:rgba(255,92,108,.13);color:var(--red);text-decoration:line-through;}
+.muted{color:var(--muted);}
+.empty{padding:46px 20px;text-align:center;color:var(--muted2);}
+.empty svg{width:34px;height:34px;opacity:.4;margin-bottom:10px;}
+.right{text-align:right;}
+.filter-row{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.filter-row input,.filter-row select{background:var(--d3);border:1px solid var(--line);border-radius:8px;padding:7px 10px;color:var(--white);font-size:13px;font-family:inherit;outline:none;}
+.statement-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.balanced-tag{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;}
+.balanced-yes{background:rgba(61,214,140,.15);color:var(--green);}
+.balanced-no{background:rgba(255,92,108,.15);color:var(--red);}
+@media(max-width:880px){.acc-side{width:64px;}.side-brand span,.side-sub,.side-glabel,.side-link span,.side-back span{display:none;}.statement-grid{grid-template-columns:1fr;}}
+.loading{padding:40px;text-align:center;color:var(--muted2);}
+</style>
+<link rel="stylesheet" href="orbit-ai.css">
+</head>
+<body>
+<div class="acc-shell">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="acc-side">
+    <div class="side-head">
+      <div class="side-brand"><span><b>Orbit</b> Accounting</span></div>
+      <div class="side-sub">Express Goods Carrier</div>
+    </div>
+    <a class="side-back" href="owner-dashboard.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      <span>Back to Dashboard</span>
+    </a>
+    <nav class="side-nav" id="sideNav"><!-- links injected by acc-ui.js --></nav>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="acc-main">
+    <header class="acc-top">
+      <div class="acc-title" id="pageTitle">Dashboard</div>
+      <div class="acc-top-actions">
+        <div class="acc-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="globalSearch" placeholder="Search entries, parties, orders…">
+        </div>
+        <button class="btn btn-sm" id="exportBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+    </header>
+
+    <div class="acc-content" id="accContent">
+      <div class="loading" id="accLoading">Loading accounting workspace…</div>
+      <!-- pages injected by acc-ui.js -->
+    </div>
+  </main>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="phase3-core.js"></script>
+<script src="invoice.js"></script>
+<script src="lr.js"></script>
+<script src="shipment.js"></script>
+<script src="acc-core.js"></script>
+<script src="acc-posting.js"></script>
+<script src="acc-ledgers.js"></script>
+<script src="acc-vouchers.js"></script>
+<script src="acc-ui.js"></script>
+<script src="orbit-ai.js"></script>
+</body>
+</html>
